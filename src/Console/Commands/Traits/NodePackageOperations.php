@@ -35,7 +35,7 @@ trait NodePackageOperations
         $packages = json_decode(file_get_contents(base_path('package.json')), true);
 
         // Ensure the configuration key exists
-        if (!array_key_exists($configurationKey, $packages)) {
+        if (! array_key_exists($configurationKey, $packages)) {
             $packages[$configurationKey] = [];
         }
 

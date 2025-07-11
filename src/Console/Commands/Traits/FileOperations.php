@@ -102,13 +102,13 @@ trait FileOperations
     {
         $webRoutesPath = base_path('routes/web.php');
 
-        if (!file_exists($webRoutesPath)) {
+        if (! file_exists($webRoutesPath)) {
             throw new RuntimeException('routes/web.php not found.');
         }
 
         // Create backup
         $backupPath = base_path('routes/web.php.backup');
-        if (!file_exists($backupPath)) {
+        if (! file_exists($backupPath)) {
             copy($webRoutesPath, $backupPath);
         }
 
@@ -120,14 +120,14 @@ trait FileOperations
         }
 
         // Add a newline if the file doesn't end with one
-        if (!str_ends_with($content, "\n")) {
+        if (! str_ends_with($content, "\n")) {
             $content .= "\n";
         }
 
         // Add an extra newline for separation and then the new require statement
-        $content .= "\n" . "require __DIR__.'/cms.php';" . "\n";
+        $content .= "\n"."require __DIR__.'/cms.php';"."\n";
 
-        if (!file_put_contents($webRoutesPath, $content)) {
+        if (! file_put_contents($webRoutesPath, $content)) {
             throw new RuntimeException('Error adding CMS routes to web.php');
         }
     }
