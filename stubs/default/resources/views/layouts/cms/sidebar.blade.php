@@ -1,6 +1,6 @@
 <div class="cms-sidebar d-flex flex-column">
     <div class="cms-sidebar-header d-flex align-items-center justify-content-center px-2 py-1">
-        <a class="navbar-brand d-flex align-items-center gap-1 pe-2" href="{{ route('dashboard') }}">
+        <a class="navbar-brand d-flex align-items-center gap-1 pe-2" href="{{ Route::has('dashboard') ? route('dashboard') : '#' }}">
             <x-cms.application-logo style="fill: currentColor; width: 25px;" />
             {{ config('app.name', 'CMS') }}
         </a>
