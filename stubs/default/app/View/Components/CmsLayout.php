@@ -1,5 +1,7 @@
 <?php
 
+namespace App\View\Components;
+
 use Illuminate\View\Component;
 use Illuminate\View\View;
 
@@ -10,6 +12,6 @@ class CmsLayout extends Component
      */
     public function render(): View
     {
-        return \App\View\Components\view('layouts.cms');
+        return view('layouts.cms');
     }
 }
