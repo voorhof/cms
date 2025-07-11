@@ -13,7 +13,6 @@ return [
     */
     'route_uri_prefix' => env('CMS_URI_PREFIX', 'cms'),
 
-
     /*
     |--------------------------------------------------------------------------
     | CMS route name
