@@ -1,0 +1,151 @@
+//
+// CMS LAYOUT
+//
+
+// Variables
+
+$cms-sidebar-width: 160px;
+$cms-topbar-height: 50px;
+$cms-transition-sidebar: left 200ms ease-in-out;
+$cms-breakpoint-sidebar: lg;
+
+// Components
+
+.cms-body {}
+
+.cms-app {
+    position: relative;
+    min-height: 100vh;
+    overflow-x: hidden;
+    color: $dark;
+    background-color: $light;
+}
+
+.cms-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    max-height: 100%;
+    width: $cms-sidebar-width;
+    z-index: $zindex-fixed;
+    transition: $cms-transition-sidebar;
+    color: $light;
+    background-color: $dark;
+    border-right: 1px solid $light;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    @include media-breakpoint-down($cms-breakpoint-sidebar) {
+        left: -$cms-sidebar-width;
+    }
+}
+
+.cms-sidebar-header {
+    height: $cms-topbar-height;
+    min-height: $cms-topbar-height;
+    border-bottom: 1px solid $light;
+}
+
+.cms-sidebar-nav {
+    --cms-nav-link-padding-x: 1rem;
+    --cms-nav-link-padding-y: .375rem;
+    --cms-nav-link-color: var(--cms-gray-200);
+    --cms-nav-link-hover-color: var(--cms-white);
+}
+
+.cms-sidebar-footer {
+    border-top: 1px solid $light;
+}
+
+.cms-page {
+    position: relative;
+    min-height: 100vh;
+    margin-left: $cms-sidebar-width;
+    padding-top: $cms-topbar-height;
+    overflow: hidden;
+
+    @include media-breakpoint-down($cms-breakpoint-sidebar) {
+        margin-left: 0;
+    }
+}
+
+.cms-navbar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: $cms-sidebar-width;
+    min-height: $cms-topbar-height;
+    z-index: $zindex-fixed;
+    transition: $cms-transition-sidebar;
+    color: $light;
+    background-color: $dark;
+    border-bottom: 1px solid $light;
+
+    .navbar-toggler {
+        --cms-navbar-toggler-focus-width: 0.1rem;
+        min-height: 31px;
+        transition: all .15s ease-in-out;
+
+        &:hover {
+            color: rgba($white, .75);
+        }
+    }
+
+    @include media-breakpoint-down($cms-breakpoint-sidebar) {
+        left: 0;
+
+        .navbar-collapse, .dropdown-menu {
+            text-align: center;
+        }
+    }
+}
+
+.cms-header {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid $secondary;
+}
+
+.cms-action-buttons {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    border-bottom: 1px solid $secondary;
+
+    .row > * {
+        flex: 0 0 auto;
+        width: auto;
+    }
+}
+
+.cms-main {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.cms-flash-message {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: $cms-sidebar-width;
+    z-index: $zindex-fixed;
+    transition: $cms-transition-sidebar;
+
+    @include media-breakpoint-down($cms-breakpoint-sidebar) {
+        left: 0;
+    }
+}
+
+// JS States - Sidebar toggle
+
+.js-show-sidebar {
+
+    @include media-breakpoint-down($cms-breakpoint-sidebar) {
+        .cms-sidebar {
+            left: 0;
+        }
+        .cms-navbar, .cms-flash-message {
+            left: $cms-sidebar-width;
+        }
+    }
+}

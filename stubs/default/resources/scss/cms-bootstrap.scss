@@ -1,0 +1,56 @@
+/**
+ * Declare custom variables
+ */
+// Prefix for :root CSS variables
+$prefix: cms-;
+
+//
+// Color system
+//
+// gray-color-variables
+$white:    #fff;
+$gray-600: #6c757d;
+$black:    #000;
+
+// theme-color-variables
+$secondary: $gray-600;
+
+// Options
+//$enable-rounded: false;
+//$enable-shadows: true;
+//$enable-gradients: true;
+$enable-cssgrid: false;
+//$enable-negative-margins: true;
+$enable-dark-mode: true;
+
+// Spacing
+$spacer: 1rem;
+
+// Typography
+//$font-family-sans-serif: Inter, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+//
+// Components
+//
+
+// Navbar
+//
+// navbar-variables
+$navbar-padding-y:         .25rem;
+$navbar-toggler-padding-y: .2rem;
+$navbar-toggler-padding-x: .375rem;
+
+// Navs
+// nav-variables
+$nav-pills-border-radius:     20rem;
+$nav-pills-link-active-color: $white;
+$nav-pills-link-active-bg:    $secondary;
+
+// Alerts
+//  alert-variables
+$alert-padding-y:   $spacer * 0.5;
+
+/**
+ * Import all of Bootstrap’s CSS
+ */
+@import "bootstrap/scss/bootstrap";

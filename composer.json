@@ -1,0 +1,45 @@
+{
+    "name": "voorhof/cms",
+    "description": "Laravel CMS scaffolding using the Bootstrap frontend toolkit and Blade templating engine.",
+    "keywords": ["laravel", "cms", "starter kit", "bootstrap", "blade"],
+    "license": "MIT",
+    "support": {
+        "issues": "https://github.com/voorhof/cms/issues",
+        "source": "https://github.com/voorhof/cms"
+    },
+    "authors": [
+        {
+            "name": "David Carton",
+            "email": "david@notrac.be"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "illuminate/console": "^12.0",
+        "illuminate/filesystem": "^12.0",
+        "illuminate/support": "^12.0",
+        "symfony/console": "^7.0"
+    },
+    "require-dev": {
+        "laravel/framework": "^12.0",
+        "orchestra/testbench-core": "^10.0",
+        "phpstan/phpstan": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Voorhof\\Cms\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Voorhof\\Cms\\CmsServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
