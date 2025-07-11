@@ -44,6 +44,7 @@ trait TestFrameworkOperations
                     __DIR__.'/../../../../stubs/default/tests-pest/Feature/Cms',
                     base_path('tests/Feature/Cms')
                 );
+                copy(__DIR__.'/../../../../stubs/default/tests-pest/Pest.php', base_path('tests/Pest.php'));
             } else {
                 (new Filesystem)->copyDirectory(
                     __DIR__.'/../../../../stubs/default/tests/Feature/Cms',
