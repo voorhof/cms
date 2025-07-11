@@ -47,19 +47,19 @@ jobs:
         if: ${{ matrix.laravel != '12' }}
         run: |
           composer create-project laravel/laravel:^${{ matrix.laravel }}.0 .
-          composer config repositories.voorhof '{"type": "path", "url": "../voorhof"}' --file composer.json
+          composer config repositories.cms '{"type": "path", "url": "../cms"}' --file composer.json
 
       - name: Setup Laravel (dev-master)
         working-directory: laravel-app
         if: ${{ matrix.laravel == '12' }}
         run: |
           composer create-project laravel/laravel:dev-master .
-          composer config repositories.voorhof '{"type": "path", "url": "../voorhof"}' --file composer.json
+          composer config repositories.cms '{"type": "path", "url": "../cms"}' --file composer.json
 
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          path: 'voorhof'
+          path: 'cms'
 
       - name: Install Voorhof Cms
         working-directory: laravel-app
