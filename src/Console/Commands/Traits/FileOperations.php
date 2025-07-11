@@ -8,7 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * File Operations Trait
  *
- * Manages file copy during Voorhof installation.
+ * Manages file copy during installation.
  *
  * @property-read OutputInterface $output
  *
@@ -71,6 +71,13 @@ trait FileOperations
         // Routes
         $this->filesystem->ensureDirectoryExists(base_path('routes'));
         copy($this->stubPath.'/default/routes/cms.php', base_path('routes/cms.php'));
+        $this->appendToWebRoutes();
+
+        // Vite
+        $this->replaceInFile(
+            "'resources/js/app.js'",
+            "'resources/js/app.js', 'resources/js/cms.js'",
+            base_path('vite.config.js'));;
 
         return true;
     }
@@ -85,5 +92,42 @@ trait FileOperations
     protected function replaceInFile(string $search, string $replace, string $path): void
     {
         file_put_contents($path, str_replace($search, $replace, file_get_contents($path)));
+    }
+
+    /**
+     * Add the CMS routes to the web.php file
+     */
+    public function appendToWebRoutes(): void
+    {
+        $webRoutesPath = base_path('routes/web.php');
+
+        if (!file_exists($webRoutesPath)) {
+            throw new \RuntimeException('routes/web.php not found.');
+        }
+
+        // Create backup
+        $backupPath = base_path('routes/web.php.backup');
+        if (!file_exists($backupPath)) {
+            copy($webRoutesPath, $backupPath);
+        }
+
+        $content = file_get_contents($webRoutesPath);
+
+        // Check if the line already exists
+        if (str_contains($content, "require __DIR__.'/cms.php'")) {
+            return;
+        }
+
+        // Add a newline if the file doesn't end with one
+        if (!str_ends_with($content, "\n")) {
+            $content .= "\n";
+        }
+
+        // Add an extra newline for separation and then the new require statement
+        $content .= "\n" . "require __DIR__.'/cms.php';" . "\n";
+
+        if (!file_put_contents($webRoutesPath, $content)) {
+            throw new \RuntimeException('Error adding CMS routes to web.php');
+        }
     }
 }

@@ -34,9 +34,21 @@ trait NodePackageOperations
 
         $packages = json_decode(file_get_contents(base_path('package.json')), true);
 
-        $packages[$configurationKey] = $callback(
-            array_key_exists($configurationKey, $packages) ? $packages[$configurationKey] : [],
+        // Ensure the configuration key exists
+        if (!array_key_exists($configurationKey, $packages)) {
+            $packages[$configurationKey] = [];
+        }
+
+        // Get new dependencies from callback
+        $newDependencies = $callback(
+            $packages[$configurationKey],
             $configurationKey
+        );
+
+        // Merge existing dependencies with new ones, keeping existing versions
+        $packages[$configurationKey] = array_merge(
+            $newDependencies,
+            $packages[$configurationKey]
         );
 
         ksort($packages[$configurationKey]);

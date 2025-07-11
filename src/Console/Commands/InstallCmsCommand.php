@@ -33,9 +33,12 @@ class InstallCmsCommand extends Command implements PromptsForMissingInput
     ];
 
     private const NODE_DEPENDENCIES = [
+        '@popperjs/core' => '^2.11.8',
+        'autoprefixer' => '^10.4.21',
         'axios' => '^1.8.2',
         'bootstrap' => '^5.3.7',
         'bootstrap-icons' => '^1.13.1',
+        'sass' => '^1.89.2',
     ];
 
     private const INSTALLATION_STEPS = [
