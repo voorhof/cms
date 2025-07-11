@@ -3,6 +3,7 @@
 namespace Voorhof\Cms\Console\Commands\Traits;
 
 use Illuminate\Filesystem\Filesystem;
+use RuntimeException;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -77,7 +78,7 @@ trait FileOperations
         $this->replaceInFile(
             "'resources/js/app.js'",
             "'resources/js/app.js', 'resources/js/cms.js'",
-            base_path('vite.config.js'));;
+            base_path('vite.config.js'));
 
         return true;
     }
@@ -102,7 +103,7 @@ trait FileOperations
         $webRoutesPath = base_path('routes/web.php');
 
         if (!file_exists($webRoutesPath)) {
-            throw new \RuntimeException('routes/web.php not found.');
+            throw new RuntimeException('routes/web.php not found.');
         }
 
         // Create backup
@@ -127,7 +128,7 @@ trait FileOperations
         $content .= "\n" . "require __DIR__.'/cms.php';" . "\n";
 
         if (!file_put_contents($webRoutesPath, $content)) {
-            throw new \RuntimeException('Error adding CMS routes to web.php');
+            throw new RuntimeException('Error adding CMS routes to web.php');
         }
     }
 }
