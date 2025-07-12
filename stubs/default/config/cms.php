@@ -36,8 +36,8 @@ return [
     */
 
     'route_middleware' => [
-//        'auth',
-//        'verified'
+        //        'auth',
+        //        'verified'
     ],
 
 ];
