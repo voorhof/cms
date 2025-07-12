@@ -24,7 +24,7 @@
                 {{-- Dropdown profile --}}
                 <x-cms.dropdown align="right" class="nav-item" togglerClasses="nav-link">
                     <x-slot:trigger>
-                        {{ Auth::user()->name }}
+                        {{ Auth::user()?->name ?? 'Username' }}
                     </x-slot:trigger>
 
                     <x-slot:content>
