@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 /**
  * CMS routes
  */
-Route::middleware(['auth', 'verified'])
+Route::middleware(config('cms.route_middleware'))
     ->prefix(config('cms.route_uri_prefix'))
     ->name(config('cms.route_name_prefix').'.')
     ->group(function () {

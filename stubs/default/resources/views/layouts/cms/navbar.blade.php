@@ -41,13 +41,19 @@
                         <hr class="dropdown-divider border-secondary">
 
                         {{-- Log out form --}}
-                        <form method="POST" action="{{ Route::has('logout') ? route('logout') : '#' }}">
-                            @csrf
+                        @if(Route::has('logout'))
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
 
-                            <x-cms.button class="dropdown-item btn-link">
+                                <x-cms.button class="dropdown-item btn-link">
+                                    <i class="bi bi-power me-1"></i> {{ __('Log Out') }}
+                                </x-cms.button>
+                            </form>
+                        @else
+                            <x-cms.button class="dropdown-item btn-link" disabled>
                                 <i class="bi bi-power me-1"></i> {{ __('Log Out') }}
                             </x-cms.button>
-                        </form>
+                        @endif
                     </x-slot:content>
                 </x-cms.dropdown>
             </div>
