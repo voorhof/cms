@@ -3,7 +3,7 @@
  */
 import axios from 'axios';
 window.axios = axios;
-indow.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /**
  * Load Bootstrap 5 frontend toolkit
