@@ -14,9 +14,10 @@ class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory;
+
+    use HasRoles;
     use Notifiable;
     use SoftDeletes;
-    use HasRoles;
 
     /**
      * The attributes that are mass assignable.

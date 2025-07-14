@@ -24,7 +24,6 @@ class CmsPagesTest extends TestCase
         $response->assertOk();
     }
 
-
     public function test_cms_dashboard_page_is_forbidden(): void
     {
         $user = User::factory()->create();

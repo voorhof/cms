@@ -49,7 +49,9 @@ trait FileOperations
         $this->filesystem->ensureDirectoryExists(app_path('Models'));
         $model = app_path('Models/User.php');
         $modelBackup = app_path('Models/User.php.backup');
-        if (! file_exists($modelBackup)) { copy($model, $modelBackup); }
+        if (! file_exists($modelBackup)) {
+            copy($model, $modelBackup);
+        }
         copy($this->stubPath.'/default/app/Models/User.php', $model);
 
         // // Components
