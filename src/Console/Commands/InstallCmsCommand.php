@@ -7,6 +7,7 @@ use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Voorhof\Cms\Console\Commands\Traits\ComposerOperations;
+use Voorhof\Cms\Console\Commands\Traits\DatabaseOperations;
 use Voorhof\Cms\Console\Commands\Traits\FileOperations;
 use Voorhof\Cms\Console\Commands\Traits\NodePackageOperations;
 use Voorhof\Cms\Console\Commands\Traits\TestFrameworkOperations;
@@ -23,6 +24,7 @@ use function Laravel\Prompts\select;
 class InstallCmsCommand extends Command implements PromptsForMissingInput
 {
     use ComposerOperations,
+        DatabaseOperations,
         FileOperations,
         NodePackageOperations,
         TestFrameworkOperations;
@@ -46,6 +48,7 @@ class InstallCmsCommand extends Command implements PromptsForMissingInput
         ['message' => 'Setting up testunit...', 'method' => 'installTests'],
         ['message' => 'Updating node packages...', 'method' => 'updateNodeDependencies'],
         ['message' => 'Compiling node packages...', 'method' => 'compileNodePackages'],
+        ['message' => 'Migrating database...', 'method' => 'migrateFreshSeed'],
     ];
 
     private const INSTALLATION_PROMPTS = [
