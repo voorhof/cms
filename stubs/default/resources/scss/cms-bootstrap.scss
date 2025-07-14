@@ -24,10 +24,16 @@ $enable-cssgrid: false;
 $enable-dark-mode: true;
 
 // Spacing
-$spacer: 1rem;
+$spacer: 1rem !default;
 
 // Typography
 //$font-family-sans-serif: Inter, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+// Grid columns
+$grid-gutter-width: $spacer * 1.5;
+
+// Container padding
+$container-padding-x: $grid-gutter-width * 1.5;
 
 //
 // Components

@@ -41,13 +41,29 @@ trait FileOperations
         $this->filesystem->ensureDirectoryExists(app_path('Http/Controllers/Cms'));
         $this->filesystem->copyDirectory($this->stubPath.'/default/app/Http/Controllers/Cms', app_path('Http/Controllers/Cms'));
 
+        // // Requests
+        $this->filesystem->ensureDirectoryExists(app_path('Http/Requests/Cms'));
+        $this->filesystem->copyDirectory($this->stubPath.'/default/app/Http/Requests/Cms', app_path('Http/Requests/Cms'));
+
+        // // Models
+        $this->filesystem->ensureDirectoryExists(app_path('Models'));
+        $model = app_path('Models/User.php');
+        $modelBackup = app_path('Models/User.php.backup');
+        if (! file_exists($modelBackup)) { copy($model, $modelBackup); }
+        copy($this->stubPath.'/default/app/Models/User.php', $model);
+
         // // Components
         $this->filesystem->ensureDirectoryExists(app_path('View/Components'));
         copy($this->stubPath.'/default/app/View/Components/CmsLayout.php', app_path('View/Components/CmsLayout.php'));
 
-        // // Config
+        // Config
         $this->filesystem->ensureDirectoryExists(base_path('config'));
         copy($this->stubPath.'/default/config/cms.php', base_path('config/cms.php'));
+
+        // Database
+        $this->filesystem->ensureDirectoryExists(base_path('database'));
+        $this->filesystem->copyDirectory(base_path('database'), base_path('database.backup'));
+        $this->filesystem->copyDirectory($this->stubPath.'/default/database', base_path('database'));
 
         // Resources
         // // JS

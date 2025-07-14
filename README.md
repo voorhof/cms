@@ -11,7 +11,7 @@ This is a basic CMS template for Laravel using [Bootstrap 5](https://getbootstra
 You can install the package via composer:
 
 ```bash
-composer require --dev voorhof/cms
+composer require voorhof/cms
 ```
 
 Run this command to install the basic CMS structure,  

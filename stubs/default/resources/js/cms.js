@@ -27,6 +27,7 @@ window.bootstrap  = bootstrap;
  */
 window.onload = function() {
     showSidebar();
+    validateForms()
 }
 
 /* Show Sidebar Toggler */
@@ -38,4 +39,30 @@ function showSidebar() {
             document.body.classList.toggle('js-show-sidebar');
         };
     }
+}
+
+/* Form Validation */
+function validateForms() {
+    const forms = document.querySelectorAll('.needs-validation')
+
+    // Loop over them and prevent submission
+    Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+
+            form.classList.add('was-validated')
+        }, false)
+
+        const inputs =  form.querySelectorAll('input.is-invalid')
+
+        Array.from(inputs).forEach(input => {
+            input.addEventListener('input', () => {
+                input.classList.remove('is-invalid')
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })
 }

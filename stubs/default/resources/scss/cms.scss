@@ -1,2 +1,10 @@
 @import "cms-bootstrap";
 @import "cms-layout";
+
+/**
+ * Extra Custom CSS
+ */
+// Reset vertical align on icons inside an icon-link
+.icon-link>.bi:before {
+    vertical-align: baseline;
+}

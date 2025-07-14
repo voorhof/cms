@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Cms;
 
-use App\Http\Controllers\Controller;
 use Illuminate\View\View;
 
-class CmsController extends Controller
+class CmsController extends BaseCmsController
 {
     /**
      * Show the CMS dashboard page

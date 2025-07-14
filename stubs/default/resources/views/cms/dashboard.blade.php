@@ -14,6 +14,7 @@
         </div>
     </x-slot>
 
+    {{-- $slot --}}
     <div>
         {{ __("Welcome to your CMS dashboard!") }}
     </div>
