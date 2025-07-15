@@ -13,8 +13,11 @@ class CmsUserControllerTest extends TestCase
     use RefreshDatabase;
 
     protected User $userWithPermission;
+
     protected User $userWithoutPermission;
+
     protected User $superAdmin;
+
     protected User $testUser;
 
     protected function setUp(): void
