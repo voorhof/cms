@@ -64,7 +64,7 @@
                                     <select name="role" id="role" class="form-select text-capitalize {{ $errors->has('role') ? 'is-invalid' : '' }}" required>
                                         <option value="" selected disabled>{{ __('Choose') }}...</option>
                                         @foreach ($roles as $role)
-                                            <option value="{{ $role }}" {{ old('role') || $user->roles()->first()->name === $role ? 'selected': '' }}>{{ $role }}</option>
+                                            <option value="{{ $role }}" {{ old('role') || ($user->roles()->first() && $user->roles()->first()->name === $role) ? 'selected': '' }}>{{ $role }}</option>
                                         @endforeach
                                     </select>
                                     <x-cms.input-error :messages="$errors->get('role')" :defaultMessage="__('This field is required.')" />
@@ -88,4 +88,3 @@
         </div>
     </div>
 </x-cms-layout>
-
