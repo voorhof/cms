@@ -5,21 +5,49 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/voorhof/cms.svg?style=flat-square)](https://packagist.org/packages/voorhof/cms)
 
 This is a basic CMS template for Laravel using [Bootstrap 5](https://getbootstrap.com/) as the frontend toolkit.  
+It includes routes, controllers, views, ... for User and Role management,  
+together with an example Post model and all CRUD functionality.
 
 ## Installation
 
-You can install the package via composer:
+You can install the package via composer.
 
 ```bash
 composer require voorhof/cms
 ```
 
 Run this command to install the basic CMS structure,  
-it will copy all necessary resource files to your app and update existing ones:
+it will copy all necessary resource files to your app and update existing ones (a backup option is available).   
+After installation, the database will automatically be refreshed and seeded with factory data.
 
 ```bash
 php artisan cms:install
 ```
+
+Under the hood [Laravel Permission](https://spatie.be/docs/laravel-permission/v6) from Spatie is used for assigning roles.  
+You may want to publish the config file for editing.
+
+```bash
+php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
+```
+
+Although it is not required for installation, a basic user auth scaffolding for registering, login,... should be present in the app.  
+If you don't have an auth starter kit already installed, [Voorhof Bries](https://github.com/voorhof/bries) is also available in this CMS package.   
+When you choose to use Bries, be sure to execute this artisan command **BEFORE cms:install**
+
+```bash
+php artisan bries:install
+```
+
+## Testing
+
+After installation there will be new test files present in the app,  
+be sure to run composer test to make sure everything is working a expected.
+
+```bash
+php artisan test
+```
+
 
 ## Credits
 
