@@ -54,6 +54,15 @@ trait FileOperations
         }
         copy($this->stubPath.'/default/app/Models/User.php', $model);
 
+        // // Providers
+        $this->filesystem->ensureDirectoryExists(app_path('Providers'));
+        $provider = app_path('Providers/AppServiceProvider.php');
+        $providerBackup = app_path('Providers/AppServiceProvider.php.backup-cms');
+        if (! file_exists($providerBackup) && $this->argument('backup')) {
+            copy($provider, $providerBackup);
+        }
+        copy($this->stubPath.'/default/app/Providers/AppServiceProvider.php', $provider);
+
         // // Components
         $this->filesystem->ensureDirectoryExists(app_path('View/Components'));
         copy($this->stubPath.'/default/app/View/Components/CmsLayout.php', app_path('View/Components/CmsLayout.php'));

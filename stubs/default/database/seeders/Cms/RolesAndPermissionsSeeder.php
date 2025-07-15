@@ -27,7 +27,7 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'publish post']);
 
         // Create Roles & assign Permissions
-        // The super-admin permissions are handled by a global Gate // TODO inside the AuthServiceProvider boot method => UPDATE TO LARAVEL 12
+        // The super-admin permissions are handled by a global Gate within the boot method of the AppServiceProvider
         Role::create(['name' => 'subscriber']);
         Role::create(['name' => 'contributor'])->givePermissionTo('access cms', 'create post', 'edit post');
         Role::create(['name' => 'editor'])->givePermissionTo('access cms', 'create post', 'edit post', 'publish post');
