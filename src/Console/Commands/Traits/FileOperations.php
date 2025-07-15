@@ -48,8 +48,8 @@ trait FileOperations
         // // Models
         $this->filesystem->ensureDirectoryExists(app_path('Models'));
         $model = app_path('Models/User.php');
-        $modelBackup = app_path('Models/User.php.backup');
-        if (! file_exists($modelBackup)) {
+        $modelBackup = app_path('Models/User.php.backup-cms');
+        if (! file_exists($modelBackup) && $this->argument('backup')) {
             copy($model, $modelBackup);
         }
         copy($this->stubPath.'/default/app/Models/User.php', $model);
@@ -64,7 +64,9 @@ trait FileOperations
 
         // Database
         $this->filesystem->ensureDirectoryExists(base_path('database'));
-        $this->filesystem->copyDirectory(base_path('database'), base_path('database.backup'));
+        if ($this->argument('backup')) {
+            $this->filesystem->copyDirectory(base_path('database'), base_path('database.backup-cms'));
+        }
         $this->filesystem->copyDirectory($this->stubPath.'/default/database', base_path('database'));
 
         // Resources
@@ -89,10 +91,18 @@ trait FileOperations
 
         // Routes
         $this->filesystem->ensureDirectoryExists(base_path('routes'));
+        if ($this->argument('backup')) {
+            $this->filesystem->copyDirectory(base_path('routes'), base_path('routes.backup-cms'));
+        }
         copy($this->stubPath.'/default/routes/cms.php', base_path('routes/cms.php'));
         $this->appendToWebRoutes();
 
         // Vite
+        if ($this->argument('backup')) {
+            $this->filesystem->copy(base_path('vite.config.js'), base_path('vite.config.js.backup-cms'));
+            $this->filesystem->copy(base_path('package.json'), base_path('package.json.backup-cms'));
+        }
+
         $this->replaceInFile(
             "'resources/js/app.js'",
             "'resources/js/app.js', 'resources/js/cms.js'",
@@ -125,9 +135,11 @@ trait FileOperations
         }
 
         // Create backup
-        $backupPath = base_path('routes/web.php.backup');
-        if (! file_exists($backupPath)) {
-            copy($webRoutesPath, $backupPath);
+        if ($this->argument('backup')) {
+            $backupPath = base_path('routes/web.php.backup-cms');
+            if (! file_exists($backupPath)) {
+                copy($webRoutesPath, $backupPath);
+            }
         }
 
         $content = file_get_contents($webRoutesPath);

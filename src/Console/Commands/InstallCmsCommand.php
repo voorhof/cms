@@ -29,6 +29,11 @@ class InstallCmsCommand extends Command implements PromptsForMissingInput
         NodePackageOperations,
         TestFrameworkOperations;
 
+    private const YES_NO_OPTIONS = [
+        1 => 'Yes',
+        0 => 'No',
+    ];
+
     private const TESTING_FRAMEWORK_OPTIONS = [
         1 => 'Pest',
         0 => 'PHPUnit',
@@ -57,6 +62,11 @@ class InstallCmsCommand extends Command implements PromptsForMissingInput
             'options' => self::TESTING_FRAMEWORK_OPTIONS,
             'default' => 1,
         ],
+        'backup' => [
+            'label' => 'Would you like to backup the original files?',
+            'options' => self::YES_NO_OPTIONS,
+            'default' => 0,
+        ],
     ];
 
     /**
@@ -66,12 +76,14 @@ class InstallCmsCommand extends Command implements PromptsForMissingInput
      *
      * Arguments:
      *   - pest: Use Pest as the testing framework
+     *   - backup: Back up the original Laravel files
      *
      * Options:
      *   - composer: Path to Composer binary
      */
     protected $signature = 'cms:install
                                 {pest : Indicate that Pest should be installed}
+                                {backup : Indicate that original files should have a backup}
                                 {--composer=global : Absolute path to the Composer binary which should be used to install packages}';
 
     /**
@@ -116,6 +128,7 @@ class InstallCmsCommand extends Command implements PromptsForMissingInput
      * 2. Set up the test framework
      * 3. Update Node.js dependencies
      * 4. Compile assets
+     * 5. Database migration and seeding
      *
      * @return int Exit code (0: success, 1: failure)
      *
@@ -139,11 +152,11 @@ class InstallCmsCommand extends Command implements PromptsForMissingInput
                 }
             }
 
-            $this->components->success('Installation successful!');
+            $this->components->success('CMS installation successful!');
 
             return 0;
         } catch (Exception $e) {
-            $this->components->error("Installation failed: {$e->getMessage()}");
+            $this->components->error("CMS installation failed: {$e->getMessage()}");
 
             return 1;
         }
