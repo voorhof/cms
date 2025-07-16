@@ -54,10 +54,10 @@
                             </h3>
 
                             <div class="mb-3">
-                                @if($user->hasRole(['super-admin', 'admin']))
+                                @if($user->hasRole(config('cms.secured_roles')))
                                     <p class="fw-bold fst-italic">
                                         <i class="bi bi-exclamation-circle"></i>
-                                        {{ __('Administrator') }}
+                                        {{ __('Secured role') }}
                                     </p>
                                 @else
                                     <x-cms.input-label for="role" :value="__('Role')" />

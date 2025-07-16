@@ -84,7 +84,7 @@
                                     <li class="text-capitalize">
                                         <i class="bi bi-shield-lock"></i>
 
-                                        <a href="" class="link-dark ms-1">
+                                        <a href="{{ route('cms.roles.show', $role) }}" class="link-dark ms-1">
                                             {{ $role->name }}
                                         </a>
                                     </li>

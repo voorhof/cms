@@ -42,7 +42,7 @@ class CmsUserController extends BaseCmsController implements HasMiddleware
      */
     public function create(): View
     {
-        $roles = Role::whereNotIn('name', ['super-admin', 'admin'])
+        $roles = Role::whereNotIn('name', config('cms.secured_roles'))
             ->orderBy('name')
             ->pluck('name', 'id');
 
@@ -72,7 +72,7 @@ class CmsUserController extends BaseCmsController implements HasMiddleware
      */
     public function edit(User $user): View
     {
-        $roles = Role::whereNotIn('name', ['super-admin', 'admin'])
+        $roles = Role::whereNotIn('name', config('cms.secured_roles'))
             ->orderBy('name')
             ->pluck('name', 'id');
 

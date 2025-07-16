@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class StoreUserRequest extends FormRequest
 {
@@ -31,7 +32,7 @@ class StoreUserRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users',
-            'role' => 'nullable|string|max:255|exists:roles,name|not_in:super-admin,admin',
+            'role' => ['nullable', 'string', 'max:255', 'exists:roles,name', Rule::notIn(config('cms.secured_roles'))],
         ];
     }
 

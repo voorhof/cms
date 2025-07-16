@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Cms\CmsController;
+use App\Http\Controllers\Cms\CmsRoleController;
 use App\Http\Controllers\Cms\CmsUserController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,4 +25,9 @@ Route::middleware(config('cms.route_middleware'))
         Route::patch('/users/{user}/restore', [CmsUserController::class, 'restore'])->name('users.restore')->withTrashed();
         Route::delete('/users/{user}/delete', [CmsUserController::class, 'delete'])->name('users.delete')->withTrashed();
         Route::resource('users', CmsUserController::class);
+
+        /**
+         * Role resource controller
+         */
+        Route::resource('roles', CmsRoleController::class);
     });

@@ -14,6 +14,11 @@
                         route="{{ config('cms.route_name_prefix') }}.users.index"
                         childRoutes="{{ config('cms.route_name_prefix') }}.roles.*" />
 
+        @can('manage roles')
+            <x-cms.nav-link title="<i class='bi bi-shield-lock'></i> {{ __('Roles') }}" class="mb-2"
+                            route="{{ config('cms.route_name_prefix') }}.roles.index" />
+        @endcan
+
 {{--        <x-cms.nav-link title="<i class='bi bi-stickies'></i> {{ __('Posts') }}" class="mb-2" route="{{ config('cms.route_name_prefix') }}.posts.index" />--}}
 
 {{--        <x-cms.nav-link title="<i class='bi bi-images'></i> {{ __('Media') }}" class="mb-2" route="{{ config('cms.route_name_prefix') }}.media.index" />--}}

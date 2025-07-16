@@ -31,7 +31,7 @@ class UpdateUserRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'email' => ['required', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user)],
-            'role' => 'nullable|string|max:255|exists:roles,name|not_in:super-admin,admin',
+            'role' => ['nullable', 'string', 'max:255', 'exists:roles,name', Rule::notIn(config('cms.secured_roles'))],
         ];
     }
 
@@ -54,7 +54,7 @@ class UpdateUserRequest extends FormRequest
             $user->save();
 
             // Assign a role to user
-            if (Auth::user()->can('manage roles') && ! $user->hasRole(['super-admin', 'admin'])) {
+            if (Auth::user()->can('manage roles') && ! $user->hasRole(config('cms.secured_roles'))) {
                 $user->syncRoles([$this->safe()->role ?? null]);
             }
 

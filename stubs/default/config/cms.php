@@ -41,4 +41,19 @@ return [
         'can:access cms',
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | CMS secured roles
+    |--------------------------------------------------------------------------
+    |
+    | These roles are protected from modifying or deleting inside the CMS
+    | By default, the admin and super-admin roles are set
+    |
+    */
+
+    'secured_roles' => [
+        'admin',
+        'super-admin',
+    ],
+
 ];
