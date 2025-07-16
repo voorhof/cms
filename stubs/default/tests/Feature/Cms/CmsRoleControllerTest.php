@@ -13,8 +13,11 @@ class CmsRoleControllerTest extends TestCase
     use RefreshDatabase;
 
     protected User $userWithPermission;
+
     protected User $userWithoutPermission;
+
     protected User $superAdmin;
+
     protected Role $testRole;
 
     protected function setUp(): void
