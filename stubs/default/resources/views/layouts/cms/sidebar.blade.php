@@ -11,8 +11,7 @@
                         route="{{ config('cms.route_name_prefix') }}.dashboard" />
 
         <x-cms.nav-link title="<i class='bi bi-people'></i> {{ __('Users') }}" class="mb-2"
-                        route="{{ config('cms.route_name_prefix') }}.users.index"
-                        childRoutes="{{ config('cms.route_name_prefix') }}.roles.*" />
+                        route="{{ config('cms.route_name_prefix') }}.users.index" />
 
         @can('manage roles')
             <x-cms.nav-link title="<i class='bi bi-shield-lock'></i> {{ __('Roles') }}" class="mb-2"
