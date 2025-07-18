@@ -9,7 +9,7 @@ use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
-class CmsPostController extends TestCase
+class CmsPostControllerTest extends TestCase
 {
     use RefreshDatabase;
 

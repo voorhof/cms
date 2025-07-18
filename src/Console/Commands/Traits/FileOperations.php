@@ -60,7 +60,7 @@ trait FileOperations
         if (! file_exists($postModelBackup) && $this->argument('backup')) {
             copy($postModel, $postModelBackup);
         }
-        copy($this->stubPath.'/default/app/Models/User.php', $postModel);
+        copy($this->stubPath.'/default/app/Models/Post.php', $postModel);
 
         // // Providers
         $this->filesystem->ensureDirectoryExists(app_path('Providers'));
