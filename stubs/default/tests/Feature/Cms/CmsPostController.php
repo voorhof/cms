@@ -14,9 +14,13 @@ class CmsPostController extends TestCase
     use RefreshDatabase;
 
     protected User $userWithFullPermission;
+
     protected User $userWithLimitedPermission;
+
     protected User $userWithoutPermission;
+
     protected User $superAdmin;
+
     protected Post $testPost;
 
     protected function setUp(): void
