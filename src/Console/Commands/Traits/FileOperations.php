@@ -83,6 +83,10 @@ trait FileOperations
         }
         copy($this->stubPath.'/default/app/Providers/FlashMessageServiceProvider.php', $flashProvider);
 
+        // // Services
+        $this->filesystem->ensureDirectoryExists(app_path('Services'));
+        $this->filesystem->copyDirectory($this->stubPath.'/default/app/Services', app_path('Services'));
+
         // // Components
         $this->filesystem->ensureDirectoryExists(app_path('View/Components'));
         copy($this->stubPath.'/default/app/View/Components/CmsLayout.php', app_path('View/Components/CmsLayout.php'));
