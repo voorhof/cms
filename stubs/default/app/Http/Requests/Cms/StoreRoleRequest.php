@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Cms;
 
+use App\Facades\Flash;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -56,8 +57,7 @@ class StoreRoleRequest extends FormRequest
         $role->syncPermissions($this->safe()->permissions ?? []);
 
         // Flash message:
-        session()->flash('flash_message', __('Successful creation!'));
-        session()->flash('flash_level', 'success');
+        Flash::success(__('Successful creation!'));
 
         // Return role
         return $role;

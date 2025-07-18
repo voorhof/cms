@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Cms;
 
+use App\Facades\Flash;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -59,8 +60,7 @@ class UpdateRoleRequest extends FormRequest
             // Sync permissions
             $role->syncPermissions($this->safe()->permissions ?? []);
 
-            session()->flash('flash_message', __('Successful update!'));
-            session()->flash('flash_level', 'success');
+            Flash::success(__('Successful update!'));
 
         } else {
             // Re-sync all permissions with the admin role as a safety measure
@@ -69,8 +69,7 @@ class UpdateRoleRequest extends FormRequest
                 $role->givePermissionTo(Permission::all());
             }
 
-            session()->flash('flash_message', __('Unable to update!'));
-            session()->flash('flash_level', 'danger');
+            Flash::danger(__('Unable to update!'));
         }
 
         // Return role

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Cms;
 
+use App\Facades\Flash;
 use App\Http\Requests\Cms\StorePostRequest;
 use App\Http\Requests\Cms\UpdatePostRequest;
 use App\Models\Post;
@@ -93,14 +94,12 @@ class CmsPostController extends BaseCmsController implements HasMiddleware
             $post->published_by = auth()->id();
             $post->published_at = $request->published_at ?? now();
 
-            session()->flash('flash_message', __('Published!'));
-            session()->flash('flash_level', 'success');
+            Flash::success(__('Published!'));
         } else {
             $post->published_by = null;
             $post->published_at = null;
 
-            session()->flash('flash_message', __('Unpublished!'));
-            session()->flash('flash_level', 'warning');
+            Flash::warning(__('Unpublished!'));
         }
 
         $post->save();
@@ -117,8 +116,7 @@ class CmsPostController extends BaseCmsController implements HasMiddleware
         $post->save();
         $post->delete();
 
-        session()->flash('flash_message', __('Successful delete!'));
-        session()->flash('flash_level', 'warning');
+        Flash::warning(__('Successful delete!'));
 
         return redirect()->route(config('cms.route_name_prefix').'.posts.index');
     }
@@ -143,8 +141,7 @@ class CmsPostController extends BaseCmsController implements HasMiddleware
     {
         $post->restore();
 
-        session()->flash('flash_message', __('Successful restore!'));
-        session()->flash('flash_level', 'success');
+        Flash::success(__('Successful restore!'));
 
         return redirect()->route(config('cms.route_name_prefix').'.posts.show', $post);
     }
@@ -156,8 +153,7 @@ class CmsPostController extends BaseCmsController implements HasMiddleware
     {
         $post->forceDelete();
 
-        session()->flash('flash_message', __('Successful delete!'));
-        session()->flash('flash_level', 'warning');
+        Flash::warning(__('Successful delete!'));
 
         return redirect()->route(config('cms.route_name_prefix').'.posts.trash');
     }
@@ -173,8 +169,7 @@ class CmsPostController extends BaseCmsController implements HasMiddleware
             }
         });
 
-        session()->flash('flash_message', __('Successful delete!'));
-        session()->flash('flash_level', 'warning');
+        Flash::warning(__('Successful delete!'));
 
         return redirect()->route(config('cms.route_name_prefix').'.posts.index');
     }

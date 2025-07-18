@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Cms;
 
+use App\Facades\Flash;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -58,12 +59,10 @@ class UpdateUserRequest extends FormRequest
                 $user->syncRoles([$this->safe()->role ?? null]);
             }
 
-            session()->flash('flash_message', __('Successful update!'));
-            session()->flash('flash_level', 'success');
+            Flash::success(__('Successful update!'));
 
         } else {
-            session()->flash('flash_message', __('Unable to update!'));
-            session()->flash('flash_level', 'danger');
+            Flash::danger(__('Unable to update!'));
         }
 
         // Return user

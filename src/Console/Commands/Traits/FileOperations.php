@@ -37,6 +37,10 @@ trait FileOperations
         $this->initializeFileSystem();
 
         // App
+        // // Facades
+        $this->filesystem->ensureDirectoryExists(app_path('Facades'));
+        $this->filesystem->copyDirectory($this->stubPath.'/default/app/Facades', app_path('Facades'));
+
         // // Controllers
         $this->filesystem->ensureDirectoryExists(app_path('Http/Controllers/Cms'));
         $this->filesystem->copyDirectory($this->stubPath.'/default/app/Http/Controllers/Cms', app_path('Http/Controllers/Cms'));
@@ -64,12 +68,20 @@ trait FileOperations
 
         // // Providers
         $this->filesystem->ensureDirectoryExists(app_path('Providers'));
-        $provider = app_path('Providers/AppServiceProvider.php');
-        $providerBackup = app_path('Providers/AppServiceProvider.php.backup-cms');
-        if (! file_exists($providerBackup) && $this->argument('backup')) {
-            copy($provider, $providerBackup);
+
+        $appProvider = app_path('Providers/AppServiceProvider.php');
+        $appProviderBackup = app_path('Providers/AppServiceProvider.php.backup-cms');
+        if (! file_exists($appProviderBackup) && $this->argument('backup')) {
+            copy($appProvider, $appProviderBackup);
         }
-        copy($this->stubPath.'/default/app/Providers/AppServiceProvider.php', $provider);
+        copy($this->stubPath.'/default/app/Providers/AppServiceProvider.php', $appProvider);
+
+        $flashProvider = app_path('Providers/FlashMessageServiceProvider.php');
+        $flashProviderBackup = app_path('Providers/FlashMessageServiceProvider.php.backup-cms');
+        if (! file_exists($flashProviderBackup) && $this->argument('backup')) {
+            copy($flashProvider, $flashProviderBackup);
+        }
+        copy($this->stubPath.'/default/app/Providers/FlashMessageServiceProvider.php', $flashProvider);
 
         // // Components
         $this->filesystem->ensureDirectoryExists(app_path('View/Components'));
@@ -84,6 +96,13 @@ trait FileOperations
             copy($app, $appBackup);
         }
         copy($this->stubPath.'/default/bootstrap/app.php', $app);
+
+        $providers = base_path('bootstrap/providers.php');
+        $providersBackup = base_path('bootstrap/providers.php.backup-cms');
+        if (! file_exists($providersBackup) && $this->argument('backup')) {
+            copy($providers, $providersBackup);
+        }
+        copy($this->stubPath.'/default/bootstrap/providers.php', $providers);
 
         // Config
         $this->filesystem->ensureDirectoryExists(base_path('config'));

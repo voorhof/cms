@@ -12,7 +12,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Service providers are registered in bootstrap/providers.php
     }
 
     /**

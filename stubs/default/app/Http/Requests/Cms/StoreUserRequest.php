@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Cms;
 
+use App\Facades\Flash;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -59,8 +60,7 @@ class StoreUserRequest extends FormRequest
         }
 
         // Flash message:
-        session()->flash('flash_message', __('Successful creation!'));
-        session()->flash('flash_level', 'success');
+        Flash::success(__('Successful creation!'));
 
         // Return user
         return $user;

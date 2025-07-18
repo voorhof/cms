@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Cms;
 
+use App\Facades\Flash;
 use App\Http\Requests\Cms\StoreRoleRequest;
 use App\Http\Requests\Cms\UpdateRoleRequest;
 use App\Models\User;
@@ -98,12 +99,10 @@ class CmsRoleController extends BaseCmsController implements HasMiddleware
         if (! in_array($role->name, config('cms.secured_roles'))) {
             $role->delete();
 
-            session()->flash('flash_message', __('Successful delete!'));
-            session()->flash('flash_level', 'warning');
+            Flash::warning(__('Successful delete!'));
 
         } else {
-            session()->flash('flash_message', __('Unable to delete!'));
-            session()->flash('flash_level', 'danger');
+            Flash::danger(__('Unable to delete!'));
 
             return redirect()->route(config('cms.route_name_prefix').'.roles.show', $role);
         }

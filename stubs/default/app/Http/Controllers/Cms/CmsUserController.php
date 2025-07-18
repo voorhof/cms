@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Cms;
 
+use App\Facades\Flash;
 use App\Http\Requests\Cms\StoreUserRequest;
 use App\Http\Requests\Cms\UpdateUserRequest;
 use App\Models\User;
@@ -100,12 +101,10 @@ class CmsUserController extends BaseCmsController implements HasMiddleware
             $user->save();
             $user->delete();
 
-            session()->flash('flash_message', __('Successful delete!'));
-            session()->flash('flash_level', 'warning');
+            Flash::warning(__('Successful delete!'));
 
         } else {
-            session()->flash('flash_message', __('Unable to delete!'));
-            session()->flash('flash_level', 'danger');
+            Flash::danger(__('Unable to delete!'));
 
             return redirect()->route(config('cms.route_name_prefix').'.users.show', $user);
         }
@@ -130,8 +129,7 @@ class CmsUserController extends BaseCmsController implements HasMiddleware
     {
         $user->restore();
 
-        session()->flash('flash_message', __('Successful restore!'));
-        session()->flash('flash_level', 'success');
+        Flash::success(__('Successful restore!'));
 
         return redirect()->route(config('cms.route_name_prefix').'.users.show', $user);
     }
@@ -143,8 +141,7 @@ class CmsUserController extends BaseCmsController implements HasMiddleware
     {
         $user->forceDelete();
 
-        session()->flash('flash_message', __('Successful delete!'));
-        session()->flash('flash_level', 'warning');
+        Flash::warning(__('Successful delete!'));
 
         return redirect()->route(config('cms.route_name_prefix').'.users.trash');
     }
@@ -160,8 +157,7 @@ class CmsUserController extends BaseCmsController implements HasMiddleware
             }
         });
 
-        session()->flash('flash_message', __('Successful delete!'));
-        session()->flash('flash_level', 'warning');
+        Flash::warning(__('Successful delete!'));
 
         return redirect()->route(config('cms.route_name_prefix').'.users.index');
     }
