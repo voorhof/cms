@@ -10,6 +10,9 @@
         <x-cms.nav-link title="<i class='bi bi-speedometer2'></i> {{ __('Dashboard') }}" class="mb-2"
                         route="{{ config('cms.route_name_prefix') }}.dashboard" />
 
+        <x-cms.nav-link title="<i class='bi bi-stickies'></i> {{ __('Posts') }}" class="mb-2"
+                        route="{{ config('cms.route_name_prefix') }}.posts.index" />
+
         <x-cms.nav-link title="<i class='bi bi-people'></i> {{ __('Users') }}" class="mb-2"
                         route="{{ config('cms.route_name_prefix') }}.users.index" />
 
@@ -17,10 +20,6 @@
             <x-cms.nav-link title="<i class='bi bi-shield-lock'></i> {{ __('Roles') }}" class="mb-2"
                             route="{{ config('cms.route_name_prefix') }}.roles.index" />
         @endcan
-
-{{--        <x-cms.nav-link title="<i class='bi bi-stickies'></i> {{ __('Posts') }}" class="mb-2" route="{{ config('cms.route_name_prefix') }}.posts.index" />--}}
-
-{{--        <x-cms.nav-link title="<i class='bi bi-images'></i> {{ __('Media') }}" class="mb-2" route="{{ config('cms.route_name_prefix') }}.media.index" />--}}
 
         <x-cms.nav-link title="<i class='bi bi-link-45deg'></i> {{ __('Example link') }}" />
 

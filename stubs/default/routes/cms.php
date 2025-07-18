@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Cms\CmsController;
+use App\Http\Controllers\Cms\CmsPostController;
 use App\Http\Controllers\Cms\CmsRoleController;
 use App\Http\Controllers\Cms\CmsUserController;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +17,16 @@ Route::middleware(config('cms.route_middleware'))
          * Dashboard page
          */
         Route::get('/', [CmsController::class, 'dashboard'])->name('dashboard');
+
+        /**
+         * Post resource controller
+         */
+        Route::get('/posts/trash', [CmsPostController::class, 'trash'])->name('posts.trash');
+        Route::delete('/posts/trash', [CmsPostController::class, 'emptyTrash'])->name('posts.emptyTrash');
+        Route::patch('/posts/{post}/restore', [CmsPostController::class, 'restore'])->name('posts.restore')->withTrashed();
+        Route::delete('/posts/{post}/delete', [CmsPostController::class, 'delete'])->name('posts.delete')->withTrashed();
+        Route::patch('/posts/{post}/publish', [CmsPostController::class, 'publish'])->name('posts.publish');
+        Route::resource('posts', CmsPostController::class);
 
         /**
          * User resource controller

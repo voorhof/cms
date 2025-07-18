@@ -55,7 +55,7 @@ class CmsRoleControllerTest extends TestCase
     {
         $response = $this
             ->actingAs($this->userWithPermission)
-            ->get(route('cms.roles.index'));
+            ->get(route(config('cms.route_name_prefix').'.roles.index'));
 
         $response->assertOk();
         $response->assertViewIs('cms.roles.index');
@@ -66,7 +66,7 @@ class CmsRoleControllerTest extends TestCase
     {
         $response = $this
             ->actingAs($this->userWithoutPermission)
-            ->get(route('cms.roles.index'));
+            ->get(route(config('cms.route_name_prefix').'.roles.index'));
 
         $response->assertForbidden();
     }
@@ -76,7 +76,7 @@ class CmsRoleControllerTest extends TestCase
     {
         $response = $this
             ->actingAs($this->userWithPermission)
-            ->get(route('cms.roles.show', $this->testRole));
+            ->get(route(config('cms.route_name_prefix').'.roles.show', $this->testRole));
 
         $response->assertOk();
         $response->assertViewIs('cms.roles.show');
@@ -87,7 +87,7 @@ class CmsRoleControllerTest extends TestCase
     {
         $response = $this
             ->actingAs($this->userWithoutPermission)
-            ->get(route('cms.roles.show', $this->testRole));
+            ->get(route(config('cms.route_name_prefix').'.roles.show', $this->testRole));
 
         $response->assertForbidden();
     }
@@ -97,7 +97,7 @@ class CmsRoleControllerTest extends TestCase
     {
         $response = $this
             ->actingAs($this->userWithPermission)
-            ->get(route('cms.roles.create'));
+            ->get(route(config('cms.route_name_prefix').'.roles.create'));
 
         $response->assertOk();
         $response->assertViewIs('cms.roles.create');
@@ -108,7 +108,7 @@ class CmsRoleControllerTest extends TestCase
     {
         $response = $this
             ->actingAs($this->userWithoutPermission)
-            ->get(route('cms.roles.create'));
+            ->get(route(config('cms.route_name_prefix').'.roles.create'));
 
         $response->assertForbidden();
     }
@@ -127,7 +127,7 @@ class CmsRoleControllerTest extends TestCase
 
         $response = $this
             ->actingAs($this->userWithPermission)
-            ->post(route('cms.roles.store'), $roleData);
+            ->post(route(config('cms.route_name_prefix').'.roles.store'), $roleData);
 
         $response->assertRedirect();
         $this->assertDatabaseHas('roles', [
@@ -147,7 +147,7 @@ class CmsRoleControllerTest extends TestCase
 
         $response = $this
             ->actingAs($this->userWithoutPermission)
-            ->post(route('cms.roles.store'), $roleData);
+            ->post(route(config('cms.route_name_prefix').'.roles.store'), $roleData);
 
         $response->assertForbidden();
         $this->assertDatabaseMissing('roles', [
@@ -160,7 +160,7 @@ class CmsRoleControllerTest extends TestCase
     {
         $response = $this
             ->actingAs($this->userWithPermission)
-            ->get(route('cms.roles.edit', $this->testRole));
+            ->get(route(config('cms.route_name_prefix').'.roles.edit', $this->testRole));
 
         $response->assertOk();
         $response->assertViewIs('cms.roles.edit');
@@ -171,7 +171,7 @@ class CmsRoleControllerTest extends TestCase
     {
         $response = $this
             ->actingAs($this->userWithoutPermission)
-            ->get(route('cms.roles.edit', $this->testRole));
+            ->get(route(config('cms.route_name_prefix').'.roles.edit', $this->testRole));
 
         $response->assertForbidden();
     }
@@ -190,7 +190,7 @@ class CmsRoleControllerTest extends TestCase
 
         $response = $this
             ->actingAs($this->userWithPermission)
-            ->put(route('cms.roles.update', $this->testRole), $updatedData);
+            ->put(route(config('cms.route_name_prefix').'.roles.update', $this->testRole), $updatedData);
 
         $response->assertRedirect();
         $this->assertDatabaseHas('roles', [
@@ -211,7 +211,7 @@ class CmsRoleControllerTest extends TestCase
 
         $response = $this
             ->actingAs($this->userWithoutPermission)
-            ->put(route('cms.roles.update', $this->testRole), $updatedData);
+            ->put(route(config('cms.route_name_prefix').'.roles.update', $this->testRole), $updatedData);
 
         $response->assertForbidden();
         $this->assertDatabaseMissing('roles', [
@@ -230,9 +230,9 @@ class CmsRoleControllerTest extends TestCase
 
         $response = $this
             ->actingAs($this->userWithPermission)
-            ->put(route('cms.roles.update', $superAdminRole), $updatedData);
+            ->put(route(config('cms.route_name_prefix').'.roles.update', $superAdminRole), $updatedData);
 
-        $response->assertRedirect(route('cms.roles.show', $superAdminRole));
+        $response->assertRedirect(route(config('cms.route_name_prefix').'.roles.show', $superAdminRole));
         $this->assertDatabaseMissing('roles', [
             'id' => $superAdminRole->id,
             'name' => 'trying-to-update-super-admin',
@@ -249,9 +249,9 @@ class CmsRoleControllerTest extends TestCase
 
         $response = $this
             ->actingAs($this->userWithPermission)
-            ->put(route('cms.roles.update', $adminRole), $updatedData);
+            ->put(route(config('cms.route_name_prefix').'.roles.update', $adminRole), $updatedData);
 
-        $response->assertRedirect(route('cms.roles.show', $adminRole));
+        $response->assertRedirect(route(config('cms.route_name_prefix').'.roles.show', $adminRole));
         $this->assertDatabaseMissing('roles', [
             'id' => $adminRole->id,
             'name' => 'trying-to-update-admin',
@@ -263,9 +263,9 @@ class CmsRoleControllerTest extends TestCase
     {
         $response = $this
             ->actingAs($this->userWithPermission)
-            ->delete(route('cms.roles.destroy', $this->testRole));
+            ->delete(route(config('cms.route_name_prefix').'.roles.destroy', $this->testRole));
 
-        $response->assertRedirect(route('cms.roles.index'));
+        $response->assertRedirect(route(config('cms.route_name_prefix').'.roles.index'));
         $this->assertDatabaseMissing('roles', [
             'id' => $this->testRole->id,
         ]);
@@ -275,7 +275,7 @@ class CmsRoleControllerTest extends TestCase
     {
         $response = $this
             ->actingAs($this->userWithoutPermission)
-            ->delete(route('cms.roles.destroy', $this->testRole));
+            ->delete(route(config('cms.route_name_prefix').'.roles.destroy', $this->testRole));
 
         $response->assertForbidden();
         $this->assertDatabaseHas('roles', [
@@ -289,9 +289,9 @@ class CmsRoleControllerTest extends TestCase
 
         $response = $this
             ->actingAs($this->userWithPermission)
-            ->delete(route('cms.roles.destroy', $superAdminRole));
+            ->delete(route(config('cms.route_name_prefix').'.roles.destroy', $superAdminRole));
 
-        $response->assertRedirect(route('cms.roles.show', $superAdminRole));
+        $response->assertRedirect(route(config('cms.route_name_prefix').'.roles.show', $superAdminRole));
         $this->assertDatabaseHas('roles', [
             'id' => $superAdminRole->id,
         ]);
@@ -303,9 +303,9 @@ class CmsRoleControllerTest extends TestCase
 
         $response = $this
             ->actingAs($this->userWithPermission)
-            ->delete(route('cms.roles.destroy', $adminRole));
+            ->delete(route(config('cms.route_name_prefix').'.roles.destroy', $adminRole));
 
-        $response->assertRedirect(route('cms.roles.show', $adminRole));
+        $response->assertRedirect(route(config('cms.route_name_prefix').'.roles.show', $adminRole));
         $this->assertDatabaseHas('roles', [
             'id' => $adminRole->id,
         ]);

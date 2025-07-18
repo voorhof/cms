@@ -7,7 +7,7 @@
     </x-slot>
 
     <x-slot name="actionButtons">
-        <a class="btn btn-sm lh-sm" href="{{ route('cms.roles.index') }}">
+        <a class="btn btn-sm lh-sm" href="{{ route(config('cms.route_name_prefix').'.roles.index') }}">
             <i class="bi bi-arrow-left"></i> {{ __('All roles') }}
         </a>
     </x-slot>
@@ -21,7 +21,7 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    <form method="POST" action="{{ route('cms.roles.store') }}" class="needs-validation" novalidate>
+                    <form method="POST" action="{{ route(config('cms.route_name_prefix').'.roles.store') }}" class="needs-validation" novalidate>
                         @csrf
 
                         <h3 class="fs-5 pt-2">
@@ -69,7 +69,7 @@
                                 <i class="bi bi-save"></i> {{ __('Save') }}
                             </x-cms.button>
 
-                            <a href="{{ route('cms.roles.index') }}" class="btn btn-dark">
+                            <a href="{{ route(config('cms.route_name_prefix').'.roles.index') }}" class="btn btn-dark">
                                 <i class="bi bi-x-circle"></i> {{ __('Cancel') }}
                             </a>
                         </div>

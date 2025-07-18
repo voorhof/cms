@@ -20,7 +20,7 @@ class CmsUserController extends BaseCmsController implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('can:manage users', except: ['index', 'show']),
+            new Middleware('permission:manage users', except: ['index', 'show']),
         ];
     }
 
@@ -56,7 +56,7 @@ class CmsUserController extends BaseCmsController implements HasMiddleware
     {
         $user = $request->actions();
 
-        return redirect()->route('cms.users.show', $user);
+        return redirect()->route(config('cms.route_name_prefix').'.users.show', $user);
     }
 
     /**
@@ -86,7 +86,7 @@ class CmsUserController extends BaseCmsController implements HasMiddleware
     {
         $user = $request->actions($user);
 
-        return redirect()->route('cms.users.show', $user);
+        return redirect()->route(config('cms.route_name_prefix').'.users.show', $user);
     }
 
     /**
@@ -107,10 +107,10 @@ class CmsUserController extends BaseCmsController implements HasMiddleware
             session()->flash('flash_message', __('Unable to delete!'));
             session()->flash('flash_level', 'danger');
 
-            return redirect()->route('cms.users.show', $user);
+            return redirect()->route(config('cms.route_name_prefix').'.users.show', $user);
         }
 
-        return redirect()->route('cms.users.index');
+        return redirect()->route(config('cms.route_name_prefix').'.users.index');
     }
 
     /**
@@ -133,7 +133,7 @@ class CmsUserController extends BaseCmsController implements HasMiddleware
         session()->flash('flash_message', __('Successful restore!'));
         session()->flash('flash_level', 'success');
 
-        return redirect()->route('cms.users.show', $user);
+        return redirect()->route(config('cms.route_name_prefix').'.users.show', $user);
     }
 
     /**
@@ -146,7 +146,7 @@ class CmsUserController extends BaseCmsController implements HasMiddleware
         session()->flash('flash_message', __('Successful delete!'));
         session()->flash('flash_level', 'warning');
 
-        return redirect()->route('cms.users.trash');
+        return redirect()->route(config('cms.route_name_prefix').'.users.trash');
     }
 
     /**
@@ -163,6 +163,6 @@ class CmsUserController extends BaseCmsController implements HasMiddleware
         session()->flash('flash_message', __('Successful delete!'));
         session()->flash('flash_level', 'warning');
 
-        return redirect()->route('cms.users.index');
+        return redirect()->route(config('cms.route_name_prefix').'.users.index');
     }
 }

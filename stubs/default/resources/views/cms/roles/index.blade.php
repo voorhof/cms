@@ -8,7 +8,7 @@
 
     @can('manage roles')
         <x-slot name="actionButtons">
-            <a class="btn btn-outline-primary btn-sm lh-sm" href="{{ route('cms.roles.create') }}">
+            <a class="btn btn-outline-primary btn-sm lh-sm" href="{{ route(config('cms.route_name_prefix').'.roles.create') }}">
                 <i class="bi bi-plus-circle"></i> {{ __('New role') }}
             </a>
         </x-slot>
@@ -28,7 +28,7 @@
 
                         <li class="mb-1">
                             <a class="icon-link link-dark link-underline-opacity-25 link-underline-opacity-100-hover text-capitalize"
-                               href="{{ route('cms.roles.show', $role) }}">
+                               href="{{ route(config('cms.route_name_prefix').'.roles.show', $role) }}">
                                 <i class="bi bi-shield-lock"></i>
                                 {{ $role->name }}
                             </a>

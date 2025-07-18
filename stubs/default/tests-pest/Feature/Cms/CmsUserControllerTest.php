@@ -36,7 +36,7 @@ beforeEach(function () {
 test('index page is displayed for user with access cms permission', function () {
     $response = $this
         ->actingAs($this->userWithoutPermission)
-        ->get(route('cms.users.index'));
+        ->get(route(config('cms.route_name_prefix').'.users.index'));
 
     $response->assertOk();
     $response->assertViewIs('cms.users.index');
@@ -47,7 +47,7 @@ test('index page is displayed for user with access cms permission', function () 
 test('show page is displayed for user with access cms permission', function () {
     $response = $this
         ->actingAs($this->userWithoutPermission)
-        ->get(route('cms.users.show', $this->testUser));
+        ->get(route(config('cms.route_name_prefix').'.users.show', $this->testUser));
 
     $response->assertOk();
     $response->assertViewIs('cms.users.show');
@@ -58,7 +58,7 @@ test('show page is displayed for user with access cms permission', function () {
 test('create page is displayed for user with manage users permission', function () {
     $response = $this
         ->actingAs($this->userWithPermission)
-        ->get(route('cms.users.create'));
+        ->get(route(config('cms.route_name_prefix').'.users.create'));
 
     $response->assertOk();
     $response->assertViewIs('cms.users.create');
@@ -68,7 +68,7 @@ test('create page is displayed for user with manage users permission', function 
 test('create page is forbidden for user without manage users permission', function () {
     $response = $this
         ->actingAs($this->userWithoutPermission)
-        ->get(route('cms.users.create'));
+        ->get(route(config('cms.route_name_prefix').'.users.create'));
 
     $response->assertForbidden();
 });
@@ -83,7 +83,7 @@ test('store creates a new user when user has manage users permission', function 
 
     $response = $this
         ->actingAs($this->userWithPermission)
-        ->post(route('cms.users.store'), $userData);
+        ->post(route(config('cms.route_name_prefix').'.users.store'), $userData);
 
     $response->assertRedirect();
     $this->assertDatabaseHas('users', [
@@ -104,7 +104,7 @@ test('store is forbidden for user without manage users permission', function () 
 
     $response = $this
         ->actingAs($this->userWithoutPermission)
-        ->post(route('cms.users.store'), $userData);
+        ->post(route(config('cms.route_name_prefix').'.users.store'), $userData);
 
     $response->assertForbidden();
     $this->assertDatabaseMissing('users', [
@@ -116,7 +116,7 @@ test('store is forbidden for user without manage users permission', function () 
 test('edit page is displayed for user with manage users permission', function () {
     $response = $this
         ->actingAs($this->userWithPermission)
-        ->get(route('cms.users.edit', $this->testUser));
+        ->get(route(config('cms.route_name_prefix').'.users.edit', $this->testUser));
 
     $response->assertOk();
     $response->assertViewIs('cms.users.edit');
@@ -126,7 +126,7 @@ test('edit page is displayed for user with manage users permission', function ()
 test('edit page is forbidden for user without manage users permission', function () {
     $response = $this
         ->actingAs($this->userWithoutPermission)
-        ->get(route('cms.users.edit', $this->testUser));
+        ->get(route(config('cms.route_name_prefix').'.users.edit', $this->testUser));
 
     $response->assertForbidden();
 });
@@ -141,7 +141,7 @@ test('update modifies a user when user has manage users permission', function ()
 
     $response = $this
         ->actingAs($this->userWithPermission)
-        ->put(route('cms.users.update', $this->testUser), $updatedData);
+        ->put(route(config('cms.route_name_prefix').'.users.update', $this->testUser), $updatedData);
 
     $response->assertRedirect();
     $this->assertDatabaseHas('users', [
@@ -162,7 +162,7 @@ test('update is forbidden for user without manage users permission', function ()
 
     $response = $this
         ->actingAs($this->userWithoutPermission)
-        ->put(route('cms.users.update', $this->testUser), $updatedData);
+        ->put(route(config('cms.route_name_prefix').'.users.update', $this->testUser), $updatedData);
 
     $response->assertForbidden();
     $this->assertDatabaseMissing('users', [
@@ -190,9 +190,9 @@ test('super-admin user cannot be updated by non-super-admin', function () {
 
     $response = $this
         ->actingAs($this->userWithPermission)
-        ->put(route('cms.users.update', $superAdminUser), $updatedData);
+        ->put(route(config('cms.route_name_prefix').'.users.update', $superAdminUser), $updatedData);
 
-    $response->assertRedirect(route('cms.users.show', $superAdminUser));
+    $response->assertRedirect(route(config('cms.route_name_prefix').'.users.show', $superAdminUser));
     $this->assertDatabaseMissing('users', [
         'id' => $superAdminUser->id,
         'name' => 'Trying to Update Super Admin',
@@ -203,9 +203,9 @@ test('super-admin user cannot be updated by non-super-admin', function () {
 test('destroy soft deletes a user when user has manage users permission', function () {
     $response = $this
         ->actingAs($this->userWithPermission)
-        ->delete(route('cms.users.destroy', $this->testUser));
+        ->delete(route(config('cms.route_name_prefix').'.users.destroy', $this->testUser));
 
-    $response->assertRedirect(route('cms.users.index'));
+    $response->assertRedirect(route(config('cms.route_name_prefix').'.users.index'));
     $this->assertSoftDeleted('users', [
         'id' => $this->testUser->id,
     ]);
@@ -214,7 +214,7 @@ test('destroy soft deletes a user when user has manage users permission', functi
 test('destroy is forbidden for user without manage users permission', function () {
     $response = $this
         ->actingAs($this->userWithoutPermission)
-        ->delete(route('cms.users.destroy', $this->testUser));
+        ->delete(route(config('cms.route_name_prefix').'.users.destroy', $this->testUser));
 
     $response->assertForbidden();
     $this->assertNotSoftDeleted('users', [
@@ -236,9 +236,9 @@ test('super-admin user cannot be deleted by non-super-admin', function () {
 
     $response = $this
         ->actingAs($this->userWithPermission)
-        ->delete(route('cms.users.destroy', $superAdminUser));
+        ->delete(route(config('cms.route_name_prefix').'.users.destroy', $superAdminUser));
 
-    $response->assertRedirect(route('cms.users.show', $superAdminUser));
+    $response->assertRedirect(route(config('cms.route_name_prefix').'.users.show', $superAdminUser));
     $this->assertNotSoftDeleted('users', [
         'id' => $superAdminUser->id,
     ]);
@@ -251,7 +251,7 @@ test('trash page is displayed for user with manage users permission', function (
 
     $response = $this
         ->actingAs($this->userWithPermission)
-        ->get(route('cms.users.trash'));
+        ->get(route(config('cms.route_name_prefix').'.users.trash'));
 
     $response->assertOk();
     $response->assertViewIs('cms.users.trash');
@@ -261,7 +261,7 @@ test('trash page is displayed for user with manage users permission', function (
 test('trash page is forbidden for user without manage users permission', function () {
     $response = $this
         ->actingAs($this->userWithoutPermission)
-        ->get(route('cms.users.trash'));
+        ->get(route(config('cms.route_name_prefix').'.users.trash'));
 
     $response->assertForbidden();
 });
@@ -273,9 +273,9 @@ test('restore restores a soft deleted user when user has manage users permission
 
     $response = $this
         ->actingAs($this->userWithPermission)
-        ->patch(route('cms.users.restore', $this->testUser));
+        ->patch(route(config('cms.route_name_prefix').'.users.restore', $this->testUser));
 
-    $response->assertRedirect(route('cms.users.show', $this->testUser));
+    $response->assertRedirect(route(config('cms.route_name_prefix').'.users.show', $this->testUser));
     $this->assertNotSoftDeleted('users', [
         'id' => $this->testUser->id,
     ]);
@@ -287,7 +287,7 @@ test('restore is forbidden for user without manage users permission', function (
 
     $response = $this
         ->actingAs($this->userWithoutPermission)
-        ->patch(route('cms.users.restore', $this->testUser));
+        ->patch(route(config('cms.route_name_prefix').'.users.restore', $this->testUser));
 
     $response->assertForbidden();
     $this->assertSoftDeleted('users', [
@@ -302,9 +302,9 @@ test('delete permanently deletes a soft deleted user when user has manage users 
 
     $response = $this
         ->actingAs($this->userWithPermission)
-        ->delete(route('cms.users.delete', $this->testUser));
+        ->delete(route(config('cms.route_name_prefix').'.users.delete', $this->testUser));
 
-    $response->assertRedirect(route('cms.users.trash'));
+    $response->assertRedirect(route(config('cms.route_name_prefix').'.users.trash'));
     $this->assertDatabaseMissing('users', [
         'id' => $this->testUser->id,
     ]);
@@ -316,7 +316,7 @@ test('delete is forbidden for user without manage users permission', function ()
 
     $response = $this
         ->actingAs($this->userWithoutPermission)
-        ->delete(route('cms.users.delete', $this->testUser));
+        ->delete(route(config('cms.route_name_prefix').'.users.delete', $this->testUser));
 
     $response->assertForbidden();
     $this->assertSoftDeleted('users', [
@@ -331,9 +331,9 @@ test('emptyTrash deletes all soft deleted users when user has manage users permi
 
     $response = $this
         ->actingAs($this->userWithPermission)
-        ->delete(route('cms.users.emptyTrash'));
+        ->delete(route(config('cms.route_name_prefix').'.users.emptyTrash'));
 
-    $response->assertRedirect(route('cms.users.index'));
+    $response->assertRedirect(route(config('cms.route_name_prefix').'.users.index'));
     $this->assertDatabaseMissing('users', [
         'id' => $this->testUser->id,
     ]);
@@ -345,7 +345,7 @@ test('emptyTrash is forbidden for user without manage users permission', functio
 
     $response = $this
         ->actingAs($this->userWithoutPermission)
-        ->delete(route('cms.users.emptyTrash'));
+        ->delete(route(config('cms.route_name_prefix').'.users.emptyTrash'));
 
     $response->assertForbidden();
     $this->assertSoftDeleted('users', [

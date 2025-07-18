@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Database\Seeders\Cms\PostSeeder;
 use Database\Seeders\Cms\RolesAndPermissionsSeeder;
 use Database\Seeders\Cms\UserSeeder;
 use Illuminate\Database\Seeder;
@@ -16,6 +17,7 @@ class CmsSeeder extends Seeder
         $this->call([
             RolesAndPermissionsSeeder::class,
             UserSeeder::class,
+            PostSeeder::class,
         ]);
     }
 }

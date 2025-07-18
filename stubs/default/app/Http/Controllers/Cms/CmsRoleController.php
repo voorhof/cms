@@ -20,7 +20,7 @@ class CmsRoleController extends BaseCmsController implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('can:manage roles'),
+            new Middleware('permission:manage roles'),
         ];
     }
 
@@ -53,7 +53,7 @@ class CmsRoleController extends BaseCmsController implements HasMiddleware
     {
         $role = $request->actions();
 
-        return redirect()->route('cms.roles.show', $role);
+        return redirect()->route(config('cms.route_name_prefix').'.roles.show', $role);
     }
 
     /**
@@ -86,7 +86,7 @@ class CmsRoleController extends BaseCmsController implements HasMiddleware
     {
         $role = $request->actions($role);
 
-        return redirect()->route('cms.roles.show', $role);
+        return redirect()->route(config('cms.route_name_prefix').'.roles.show', $role);
     }
 
     /**
@@ -105,9 +105,9 @@ class CmsRoleController extends BaseCmsController implements HasMiddleware
             session()->flash('flash_message', __('Unable to delete!'));
             session()->flash('flash_level', 'danger');
 
-            return redirect()->route('cms.roles.show', $role);
+            return redirect()->route(config('cms.route_name_prefix').'.roles.show', $role);
         }
 
-        return redirect()->route('cms.roles.index');
+        return redirect()->route(config('cms.route_name_prefix').'.roles.index');
     }
 }

@@ -8,11 +8,11 @@
 
     @can('manage users')
         <x-slot name="actionButtons">
-            <a class="btn btn-outline-primary btn-sm lh-sm" href="{{ route('cms.users.create') }}">
+            <a class="btn btn-outline-primary btn-sm lh-sm" href="{{ route(config('cms.route_name_prefix').'.users.create') }}">
                 <i class="bi bi-plus-circle"></i> {{ __('New user') }}
             </a>
 
-            <a class="btn btn-outline-secondary btn-sm lh-sm ms-sm-auto" href="{{ route('cms.users.trash') }}">
+            <a class="btn btn-outline-secondary btn-sm lh-sm ms-sm-auto" href="{{ route(config('cms.route_name_prefix').'.users.trash') }}">
                 <i class="bi bi-trash"></i> {{ __('Trash') }}
                 <span class="{{ $usersTrashCount > 0 ? 'fw-bold' : 'fw-light' }}">{{ '(' . $usersTrashCount . ')' }}</span>
             </a>
@@ -33,7 +33,7 @@
 
                         <li class="mb-1">
                             <a class="icon-link link-dark link-underline-opacity-25 link-underline-opacity-100-hover"
-                               href="{{ route('cms.users.show', $user) }}">
+                               href="{{ route(config('cms.route_name_prefix').'.users.show', $user) }}">
                                 @if(! $user->email_verified_at)
                                     <i class="bi bi-person-dash text-danger"></i>
                                 @else

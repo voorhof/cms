@@ -56,7 +56,7 @@ class CmsUserControllerTest extends TestCase
     {
         $response = $this
             ->actingAs($this->userWithoutPermission)
-            ->get(route('cms.users.index'));
+            ->get(route(config('cms.route_name_prefix').'.users.index'));
 
         $response->assertOk();
         $response->assertViewIs('cms.users.index');
@@ -68,7 +68,7 @@ class CmsUserControllerTest extends TestCase
     {
         $response = $this
             ->actingAs($this->userWithoutPermission)
-            ->get(route('cms.users.show', $this->testUser));
+            ->get(route(config('cms.route_name_prefix').'.users.show', $this->testUser));
 
         $response->assertOk();
         $response->assertViewIs('cms.users.show');
@@ -80,7 +80,7 @@ class CmsUserControllerTest extends TestCase
     {
         $response = $this
             ->actingAs($this->userWithPermission)
-            ->get(route('cms.users.create'));
+            ->get(route(config('cms.route_name_prefix').'.users.create'));
 
         $response->assertOk();
         $response->assertViewIs('cms.users.create');
@@ -91,7 +91,7 @@ class CmsUserControllerTest extends TestCase
     {
         $response = $this
             ->actingAs($this->userWithoutPermission)
-            ->get(route('cms.users.create'));
+            ->get(route(config('cms.route_name_prefix').'.users.create'));
 
         $response->assertForbidden();
     }
@@ -107,7 +107,7 @@ class CmsUserControllerTest extends TestCase
 
         $response = $this
             ->actingAs($this->userWithPermission)
-            ->post(route('cms.users.store'), $userData);
+            ->post(route(config('cms.route_name_prefix').'.users.store'), $userData);
 
         $response->assertRedirect();
         $this->assertDatabaseHas('users', [
@@ -129,7 +129,7 @@ class CmsUserControllerTest extends TestCase
 
         $response = $this
             ->actingAs($this->userWithoutPermission)
-            ->post(route('cms.users.store'), $userData);
+            ->post(route(config('cms.route_name_prefix').'.users.store'), $userData);
 
         $response->assertForbidden();
         $this->assertDatabaseMissing('users', [
@@ -142,7 +142,7 @@ class CmsUserControllerTest extends TestCase
     {
         $response = $this
             ->actingAs($this->userWithPermission)
-            ->get(route('cms.users.edit', $this->testUser));
+            ->get(route(config('cms.route_name_prefix').'.users.edit', $this->testUser));
 
         $response->assertOk();
         $response->assertViewIs('cms.users.edit');
@@ -153,7 +153,7 @@ class CmsUserControllerTest extends TestCase
     {
         $response = $this
             ->actingAs($this->userWithoutPermission)
-            ->get(route('cms.users.edit', $this->testUser));
+            ->get(route(config('cms.route_name_prefix').'.users.edit', $this->testUser));
 
         $response->assertForbidden();
     }
@@ -169,7 +169,7 @@ class CmsUserControllerTest extends TestCase
 
         $response = $this
             ->actingAs($this->userWithPermission)
-            ->put(route('cms.users.update', $this->testUser), $updatedData);
+            ->put(route(config('cms.route_name_prefix').'.users.update', $this->testUser), $updatedData);
 
         $response->assertRedirect();
         $this->assertDatabaseHas('users', [
@@ -191,7 +191,7 @@ class CmsUserControllerTest extends TestCase
 
         $response = $this
             ->actingAs($this->userWithoutPermission)
-            ->put(route('cms.users.update', $this->testUser), $updatedData);
+            ->put(route(config('cms.route_name_prefix').'.users.update', $this->testUser), $updatedData);
 
         $response->assertForbidden();
         $this->assertDatabaseMissing('users', [
@@ -220,9 +220,9 @@ class CmsUserControllerTest extends TestCase
 
         $response = $this
             ->actingAs($this->userWithPermission)
-            ->put(route('cms.users.update', $superAdminUser), $updatedData);
+            ->put(route(config('cms.route_name_prefix').'.users.update', $superAdminUser), $updatedData);
 
-        $response->assertRedirect(route('cms.users.show', $superAdminUser));
+        $response->assertRedirect(route(config('cms.route_name_prefix').'.users.show', $superAdminUser));
         $this->assertDatabaseMissing('users', [
             'id' => $superAdminUser->id,
             'name' => 'Trying to Update Super Admin',
@@ -234,9 +234,9 @@ class CmsUserControllerTest extends TestCase
     {
         $response = $this
             ->actingAs($this->userWithPermission)
-            ->delete(route('cms.users.destroy', $this->testUser));
+            ->delete(route(config('cms.route_name_prefix').'.users.destroy', $this->testUser));
 
-        $response->assertRedirect(route('cms.users.index'));
+        $response->assertRedirect(route(config('cms.route_name_prefix').'.users.index'));
         $this->assertSoftDeleted('users', [
             'id' => $this->testUser->id,
         ]);
@@ -246,7 +246,7 @@ class CmsUserControllerTest extends TestCase
     {
         $response = $this
             ->actingAs($this->userWithoutPermission)
-            ->delete(route('cms.users.destroy', $this->testUser));
+            ->delete(route(config('cms.route_name_prefix').'.users.destroy', $this->testUser));
 
         $response->assertForbidden();
         $this->assertNotSoftDeleted('users', [
@@ -269,9 +269,9 @@ class CmsUserControllerTest extends TestCase
 
         $response = $this
             ->actingAs($this->userWithPermission)
-            ->delete(route('cms.users.destroy', $superAdminUser));
+            ->delete(route(config('cms.route_name_prefix').'.users.destroy', $superAdminUser));
 
-        $response->assertRedirect(route('cms.users.show', $superAdminUser));
+        $response->assertRedirect(route(config('cms.route_name_prefix').'.users.show', $superAdminUser));
         $this->assertNotSoftDeleted('users', [
             'id' => $superAdminUser->id,
         ]);
@@ -285,7 +285,7 @@ class CmsUserControllerTest extends TestCase
 
         $response = $this
             ->actingAs($this->userWithPermission)
-            ->get(route('cms.users.trash'));
+            ->get(route(config('cms.route_name_prefix').'.users.trash'));
 
         $response->assertOk();
         $response->assertViewIs('cms.users.trash');
@@ -296,7 +296,7 @@ class CmsUserControllerTest extends TestCase
     {
         $response = $this
             ->actingAs($this->userWithoutPermission)
-            ->get(route('cms.users.trash'));
+            ->get(route(config('cms.route_name_prefix').'.users.trash'));
 
         $response->assertForbidden();
     }
@@ -309,9 +309,9 @@ class CmsUserControllerTest extends TestCase
 
         $response = $this
             ->actingAs($this->userWithPermission)
-            ->patch(route('cms.users.restore', $this->testUser));
+            ->patch(route(config('cms.route_name_prefix').'.users.restore', $this->testUser));
 
-        $response->assertRedirect(route('cms.users.show', $this->testUser));
+        $response->assertRedirect(route(config('cms.route_name_prefix').'.users.show', $this->testUser));
         $this->assertNotSoftDeleted('users', [
             'id' => $this->testUser->id,
         ]);
@@ -324,7 +324,7 @@ class CmsUserControllerTest extends TestCase
 
         $response = $this
             ->actingAs($this->userWithoutPermission)
-            ->patch(route('cms.users.restore', $this->testUser));
+            ->patch(route(config('cms.route_name_prefix').'.users.restore', $this->testUser));
 
         $response->assertForbidden();
         $this->assertSoftDeleted('users', [
@@ -340,9 +340,9 @@ class CmsUserControllerTest extends TestCase
 
         $response = $this
             ->actingAs($this->userWithPermission)
-            ->delete(route('cms.users.delete', $this->testUser));
+            ->delete(route(config('cms.route_name_prefix').'.users.delete', $this->testUser));
 
-        $response->assertRedirect(route('cms.users.trash'));
+        $response->assertRedirect(route(config('cms.route_name_prefix').'.users.trash'));
         $this->assertDatabaseMissing('users', [
             'id' => $this->testUser->id,
         ]);
@@ -355,7 +355,7 @@ class CmsUserControllerTest extends TestCase
 
         $response = $this
             ->actingAs($this->userWithoutPermission)
-            ->delete(route('cms.users.delete', $this->testUser));
+            ->delete(route(config('cms.route_name_prefix').'.users.delete', $this->testUser));
 
         $response->assertForbidden();
         $this->assertSoftDeleted('users', [
@@ -371,9 +371,9 @@ class CmsUserControllerTest extends TestCase
 
         $response = $this
             ->actingAs($this->userWithPermission)
-            ->delete(route('cms.users.emptyTrash'));
+            ->delete(route(config('cms.route_name_prefix').'.users.emptyTrash'));
 
-        $response->assertRedirect(route('cms.users.index'));
+        $response->assertRedirect(route(config('cms.route_name_prefix').'.users.index'));
         $this->assertDatabaseMissing('users', [
             'id' => $this->testUser->id,
         ]);
@@ -386,7 +386,7 @@ class CmsUserControllerTest extends TestCase
 
         $response = $this
             ->actingAs($this->userWithoutPermission)
-            ->delete(route('cms.users.emptyTrash'));
+            ->delete(route(config('cms.route_name_prefix').'.users.emptyTrash'));
 
         $response->assertForbidden();
         $this->assertSoftDeleted('users', [

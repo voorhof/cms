@@ -35,7 +35,7 @@ beforeEach(function () {
 test('index page is displayed for user with manage roles permission', function () {
     $response = $this
         ->actingAs($this->userWithPermission)
-        ->get(route('cms.roles.index'));
+        ->get(route(config('cms.route_name_prefix').'.roles.index'));
 
     $response->assertOk();
     $response->assertViewIs('cms.roles.index');
@@ -45,7 +45,7 @@ test('index page is displayed for user with manage roles permission', function (
 test('index page is forbidden for user without manage roles permission', function () {
     $response = $this
         ->actingAs($this->userWithoutPermission)
-        ->get(route('cms.roles.index'));
+        ->get(route(config('cms.route_name_prefix').'.roles.index'));
 
     $response->assertForbidden();
 });
@@ -54,7 +54,7 @@ test('index page is forbidden for user without manage roles permission', functio
 test('show page is displayed for user with manage roles permission', function () {
     $response = $this
         ->actingAs($this->userWithPermission)
-        ->get(route('cms.roles.show', $this->testRole));
+        ->get(route(config('cms.route_name_prefix').'.roles.show', $this->testRole));
 
     $response->assertOk();
     $response->assertViewIs('cms.roles.show');
@@ -64,7 +64,7 @@ test('show page is displayed for user with manage roles permission', function ()
 test('show page is forbidden for user without manage roles permission', function () {
     $response = $this
         ->actingAs($this->userWithoutPermission)
-        ->get(route('cms.roles.show', $this->testRole));
+        ->get(route(config('cms.route_name_prefix').'.roles.show', $this->testRole));
 
     $response->assertForbidden();
 });
@@ -73,7 +73,7 @@ test('show page is forbidden for user without manage roles permission', function
 test('create page is displayed for user with manage roles permission', function () {
     $response = $this
         ->actingAs($this->userWithPermission)
-        ->get(route('cms.roles.create'));
+        ->get(route(config('cms.route_name_prefix').'.roles.create'));
 
     $response->assertOk();
     $response->assertViewIs('cms.roles.create');
@@ -83,7 +83,7 @@ test('create page is displayed for user with manage roles permission', function 
 test('create page is forbidden for user without manage roles permission', function () {
     $response = $this
         ->actingAs($this->userWithoutPermission)
-        ->get(route('cms.roles.create'));
+        ->get(route(config('cms.route_name_prefix').'.roles.create'));
 
     $response->assertForbidden();
 });
@@ -101,7 +101,7 @@ test('store creates a new role when user has manage roles permission', function 
 
     $response = $this
         ->actingAs($this->userWithPermission)
-        ->post(route('cms.roles.store'), $roleData);
+        ->post(route(config('cms.route_name_prefix').'.roles.store'), $roleData);
 
     $response->assertRedirect();
     $this->assertDatabaseHas('roles', [
@@ -120,7 +120,7 @@ test('store is forbidden for user without manage roles permission', function () 
 
     $response = $this
         ->actingAs($this->userWithoutPermission)
-        ->post(route('cms.roles.store'), $roleData);
+        ->post(route(config('cms.route_name_prefix').'.roles.store'), $roleData);
 
     $response->assertForbidden();
     $this->assertDatabaseMissing('roles', [
@@ -132,7 +132,7 @@ test('store is forbidden for user without manage roles permission', function () 
 test('edit page is displayed for user with manage roles permission', function () {
     $response = $this
         ->actingAs($this->userWithPermission)
-        ->get(route('cms.roles.edit', $this->testRole));
+        ->get(route(config('cms.route_name_prefix').'.roles.edit', $this->testRole));
 
     $response->assertOk();
     $response->assertViewIs('cms.roles.edit');
@@ -142,7 +142,7 @@ test('edit page is displayed for user with manage roles permission', function ()
 test('edit page is forbidden for user without manage roles permission', function () {
     $response = $this
         ->actingAs($this->userWithoutPermission)
-        ->get(route('cms.roles.edit', $this->testRole));
+        ->get(route(config('cms.route_name_prefix').'.roles.edit', $this->testRole));
 
     $response->assertForbidden();
 });
@@ -160,7 +160,7 @@ test('update modifies a role when user has manage roles permission', function ()
 
     $response = $this
         ->actingAs($this->userWithPermission)
-        ->put(route('cms.roles.update', $this->testRole), $updatedData);
+        ->put(route(config('cms.route_name_prefix').'.roles.update', $this->testRole), $updatedData);
 
     $response->assertRedirect();
     $this->assertDatabaseHas('roles', [
@@ -180,7 +180,7 @@ test('update is forbidden for user without manage roles permission', function ()
 
     $response = $this
         ->actingAs($this->userWithoutPermission)
-        ->put(route('cms.roles.update', $this->testRole), $updatedData);
+        ->put(route(config('cms.route_name_prefix').'.roles.update', $this->testRole), $updatedData);
 
     $response->assertForbidden();
     $this->assertDatabaseMissing('roles', [
@@ -198,9 +198,9 @@ test('super-admin role cannot be updated', function () {
 
     $response = $this
         ->actingAs($this->userWithPermission)
-        ->put(route('cms.roles.update', $superAdminRole), $updatedData);
+        ->put(route(config('cms.route_name_prefix').'.roles.update', $superAdminRole), $updatedData);
 
-    $response->assertRedirect(route('cms.roles.show', $superAdminRole));
+    $response->assertRedirect(route(config('cms.route_name_prefix').'.roles.show', $superAdminRole));
     $this->assertDatabaseMissing('roles', [
         'id' => $superAdminRole->id,
         'name' => 'trying-to-update-super-admin',
@@ -216,9 +216,9 @@ test('admin role cannot be updated', function () {
 
     $response = $this
         ->actingAs($this->userWithPermission)
-        ->put(route('cms.roles.update', $adminRole), $updatedData);
+        ->put(route(config('cms.route_name_prefix').'.roles.update', $adminRole), $updatedData);
 
-    $response->assertRedirect(route('cms.roles.show', $adminRole));
+    $response->assertRedirect(route(config('cms.route_name_prefix').'.roles.show', $adminRole));
     $this->assertDatabaseMissing('roles', [
         'id' => $adminRole->id,
         'name' => 'trying-to-update-admin',
@@ -229,9 +229,9 @@ test('admin role cannot be updated', function () {
 test('destroy deletes a role when user has manage roles permission', function () {
     $response = $this
         ->actingAs($this->userWithPermission)
-        ->delete(route('cms.roles.destroy', $this->testRole));
+        ->delete(route(config('cms.route_name_prefix').'.roles.destroy', $this->testRole));
 
-    $response->assertRedirect(route('cms.roles.index'));
+    $response->assertRedirect(route(config('cms.route_name_prefix').'.roles.index'));
     $this->assertDatabaseMissing('roles', [
         'id' => $this->testRole->id,
     ]);
@@ -240,7 +240,7 @@ test('destroy deletes a role when user has manage roles permission', function ()
 test('destroy is forbidden for user without manage roles permission', function () {
     $response = $this
         ->actingAs($this->userWithoutPermission)
-        ->delete(route('cms.roles.destroy', $this->testRole));
+        ->delete(route(config('cms.route_name_prefix').'.roles.destroy', $this->testRole));
 
     $response->assertForbidden();
     $this->assertDatabaseHas('roles', [
@@ -253,9 +253,9 @@ test('super-admin role cannot be deleted', function () {
 
     $response = $this
         ->actingAs($this->userWithPermission)
-        ->delete(route('cms.roles.destroy', $superAdminRole));
+        ->delete(route(config('cms.route_name_prefix').'.roles.destroy', $superAdminRole));
 
-    $response->assertRedirect(route('cms.roles.show', $superAdminRole));
+    $response->assertRedirect(route(config('cms.route_name_prefix').'.roles.show', $superAdminRole));
     $this->assertDatabaseHas('roles', [
         'id' => $superAdminRole->id,
     ]);
@@ -266,9 +266,9 @@ test('admin role cannot be deleted', function () {
 
     $response = $this
         ->actingAs($this->userWithPermission)
-        ->delete(route('cms.roles.destroy', $adminRole));
+        ->delete(route(config('cms.route_name_prefix').'.roles.destroy', $adminRole));
 
-    $response->assertRedirect(route('cms.roles.show', $adminRole));
+    $response->assertRedirect(route(config('cms.route_name_prefix').'.roles.show', $adminRole));
     $this->assertDatabaseHas('roles', [
         'id' => $adminRole->id,
     ]);

@@ -7,12 +7,12 @@
     </x-slot>
 
     <x-slot name="actionButtons">
-        <a class="btn btn-sm lh-sm" href="{{ route('cms.users.index') }}">
+        <a class="btn btn-sm lh-sm" href="{{ route(config('cms.route_name_prefix').'.users.index') }}">
             <i class="bi bi-arrow-left"></i> {{ __('All users') }}
         </a>
 
         @can('manage users')
-            <a class="btn btn-outline-primary btn-sm lh-sm ms-sm-auto" href="{{ route('cms.users.edit', $user) }}">
+            <a class="btn btn-outline-primary btn-sm lh-sm ms-sm-auto" href="{{ route(config('cms.route_name_prefix').'.users.edit', $user) }}">
                 <i class="bi bi-pencil-square"></i> {{ __('Edit user') }}
             </a>
 
@@ -84,7 +84,7 @@
                                     <li class="text-capitalize">
                                         <i class="bi bi-shield-lock"></i>
 
-                                        <a href="{{ route('cms.roles.show', $role) }}" class="link-dark ms-1">
+                                        <a href="{{ route(config('cms.route_name_prefix').'.roles.show', $role) }}" class="link-dark ms-1">
                                             {{ $role->name }}
                                         </a>
                                     </li>
@@ -149,7 +149,7 @@
                             </x-cms.button>
 
                             {{-- Delete user form --}}
-                            <form method="POST" action="{{ route('cms.users.destroy', $user) }}">
+                            <form method="POST" action="{{ route(config('cms.route_name_prefix').'.users.destroy', $user) }}">
                                 @csrf
                                 @method('DELETE')
                                 <x-cms.button class="btn-danger">

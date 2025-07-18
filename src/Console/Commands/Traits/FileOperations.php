@@ -47,12 +47,20 @@ trait FileOperations
 
         // // Models
         $this->filesystem->ensureDirectoryExists(app_path('Models'));
-        $model = app_path('Models/User.php');
-        $modelBackup = app_path('Models/User.php.backup-cms');
-        if (! file_exists($modelBackup) && $this->argument('backup')) {
-            copy($model, $modelBackup);
+
+        $userModel = app_path('Models/User.php');
+        $userModelBackup = app_path('Models/User.php.backup-cms');
+        if (! file_exists($userModelBackup) && $this->argument('backup')) {
+            copy($userModel, $userModelBackup);
         }
-        copy($this->stubPath.'/default/app/Models/User.php', $model);
+        copy($this->stubPath.'/default/app/Models/User.php', $userModel);
+
+        $postModel = app_path('Models/Post.php');
+        $postModelBackup = app_path('Models/Post.php.backup-cms');
+        if (! file_exists($postModelBackup) && $this->argument('backup')) {
+            copy($postModel, $postModelBackup);
+        }
+        copy($this->stubPath.'/default/app/Models/User.php', $postModel);
 
         // // Providers
         $this->filesystem->ensureDirectoryExists(app_path('Providers'));
@@ -66,6 +74,16 @@ trait FileOperations
         // // Components
         $this->filesystem->ensureDirectoryExists(app_path('View/Components'));
         copy($this->stubPath.'/default/app/View/Components/CmsLayout.php', app_path('View/Components/CmsLayout.php'));
+
+        // Bootstrap
+        $this->filesystem->ensureDirectoryExists(base_path('bootstrap'));
+
+        $app = base_path('bootstrap/app.php');
+        $appBackup = base_path('bootstrap/app.php.backup-cms');
+        if (! file_exists($appBackup) && $this->argument('backup')) {
+            copy($app, $appBackup);
+        }
+        copy($this->stubPath.'/default/bootstrap/app.php', $app);
 
         // Config
         $this->filesystem->ensureDirectoryExists(base_path('config'));

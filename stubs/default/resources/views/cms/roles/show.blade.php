@@ -7,13 +7,13 @@
     </x-slot>
 
     <x-slot name="actionButtons">
-        <a class="btn btn-sm lh-sm" href="{{ route('cms.roles.index') }}">
+        <a class="btn btn-sm lh-sm" href="{{ route(config('cms.route_name_prefix').'.roles.index') }}">
             <i class="bi bi-arrow-left"></i> {{ __('All roles') }}
         </a>
 
         @can('manage roles')
             @if(! in_array($role->name, config('cms.secured_roles')))
-                <a class="btn btn-outline-primary btn-sm lh-sm ms-sm-auto" href="{{ route('cms.roles.edit', $role) }}">
+                <a class="btn btn-outline-primary btn-sm lh-sm ms-sm-auto" href="{{ route(config('cms.route_name_prefix').'.roles.edit', $role) }}">
                     <i class="bi bi-pencil-square"></i> {{ __('Edit role') }}
                 </a>
 
@@ -47,7 +47,7 @@
 
 
                                     {{-- Delete role form --}}
-                                    <form method="POST" action="{{ route('cms.roles.destroy', $role) }}">
+                                    <form method="POST" action="{{ route(config('cms.route_name_prefix').'.roles.destroy', $role) }}">
                                         @csrf
                                         @method('DELETE')
                                         <x-cms.button class="btn-danger">
@@ -146,7 +146,7 @@
                                 <i class="bi bi-person-check text-success"></i>
                             @endif
 
-                            <a href="{{ route('cms.users.show', $user) }}" class="link-dark ms-1">
+                            <a href="{{ route(config('cms.route_name_prefix').'.users.show', $user) }}" class="link-dark ms-1">
                                 {{ $user->name }}
                             </a>
                         </li>

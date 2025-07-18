@@ -62,4 +62,14 @@ class UserFactory extends Factory
             $user->assignRole('subscriber');
         });
     }
+
+    /**
+     * Indicate that the model is a contributor.
+     */
+    public function contributor(): static
+    {
+        return $this->afterCreating(function (User $user) {
+            $user->assignRole('contributor');
+        });
+    }
 }
