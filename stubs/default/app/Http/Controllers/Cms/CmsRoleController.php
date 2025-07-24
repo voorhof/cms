@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Cms;
 
-use App\Facades\Flash;
 use App\Http\Requests\Cms\StoreRoleRequest;
 use App\Http\Requests\Cms\UpdateRoleRequest;
 use App\Models\User;
@@ -12,6 +11,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\View\View;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Voorhof\Flash\Facades\Flash;
 
 class CmsRoleController extends BaseCmsController implements HasMiddleware
 {

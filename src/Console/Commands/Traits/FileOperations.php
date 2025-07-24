@@ -37,10 +37,6 @@ trait FileOperations
         $this->initializeFileSystem();
 
         // App
-        // // Facades
-        $this->filesystem->ensureDirectoryExists(app_path('Facades'));
-        $this->filesystem->copyDirectory($this->stubPath.'/default/app/Facades', app_path('Facades'));
-
         // // Controllers
         $this->filesystem->ensureDirectoryExists(app_path('Http/Controllers/Cms'));
         $this->filesystem->copyDirectory($this->stubPath.'/default/app/Http/Controllers/Cms', app_path('Http/Controllers/Cms'));
@@ -75,17 +71,6 @@ trait FileOperations
             copy($appProvider, $appProviderBackup);
         }
         copy($this->stubPath.'/default/app/Providers/AppServiceProvider.php', $appProvider);
-
-        $flashProvider = app_path('Providers/FlashMessageServiceProvider.php');
-        $flashProviderBackup = app_path('Providers/FlashMessageServiceProvider.php.backup-cms');
-        if (! file_exists($flashProviderBackup) && $this->argument('backup')) {
-            copy($flashProvider, $flashProviderBackup);
-        }
-        copy($this->stubPath.'/default/app/Providers/FlashMessageServiceProvider.php', $flashProvider);
-
-        // // Services
-        $this->filesystem->ensureDirectoryExists(app_path('Services'));
-        $this->filesystem->copyDirectory($this->stubPath.'/default/app/Services', app_path('Services'));
 
         // // Components
         $this->filesystem->ensureDirectoryExists(app_path('View/Components'));

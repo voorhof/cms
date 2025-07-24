@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Cms;
 
-use App\Facades\Flash;
 use App\Http\Requests\Cms\StoreUserRequest;
 use App\Http\Requests\Cms\UpdateUserRequest;
 use App\Models\User;
@@ -12,6 +11,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Spatie\Permission\Models\Role;
+use Voorhof\Flash\Facades\Flash;
 
 class CmsUserController extends BaseCmsController implements HasMiddleware
 {

@@ -2,11 +2,11 @@
 
 namespace App\Http\Requests\Cms;
 
-use App\Facades\Flash;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
+use Voorhof\Flash\Facades\Flash;
 
 class StoreRoleRequest extends FormRequest
 {

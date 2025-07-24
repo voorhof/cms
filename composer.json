@@ -20,7 +20,8 @@
         "illuminate/support": "^12.0",
         "spatie/laravel-permission": "^6.20",
         "symfony/console": "^7.0",
-        "voorhof/bries": "^1.0"
+        "voorhof/bries": "^1.0",
+        "voorhof/flash": "^1.0"
     },
     "require-dev": {
         "laravel/framework": "^12.0",

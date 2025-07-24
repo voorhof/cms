@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests\Cms;
 
-use App\Facades\Flash;
 use App\Models\Post;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Voorhof\Flash\Facades\Flash;
 
 class StorePostRequest extends FormRequest
 {

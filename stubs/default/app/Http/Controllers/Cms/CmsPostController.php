@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Cms;
 
-use App\Facades\Flash;
 use App\Http\Requests\Cms\StorePostRequest;
 use App\Http\Requests\Cms\UpdatePostRequest;
 use App\Models\Post;
@@ -11,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\View\View;
+use Voorhof\Flash\Facades\Flash;
 
 class CmsPostController extends BaseCmsController implements HasMiddleware
 {

@@ -31,7 +31,13 @@
         </main>
 
         {{-- Session flash messages --}}
-        @if(Session::has('flash_message')) @include('layouts.cms.flash-message') @endif
+        @if(Session::has('flash_message'))
+            <div class="cms-flash-message fs-5">
+                <div class="container-xl">
+                    @include('flash::flash')
+                </div>
+            </div>
+        @endif
     </div>
 
     {{-- Modals --}}
