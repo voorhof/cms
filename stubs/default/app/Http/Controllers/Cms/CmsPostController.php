@@ -22,7 +22,6 @@ class CmsPostController extends BaseCmsController implements HasMiddleware
     /**
      * Create a new controller instance.
      *
-     * @param PostServiceInterface $postService
      * @return void
      */
     public function __construct(PostServiceInterface $postService)

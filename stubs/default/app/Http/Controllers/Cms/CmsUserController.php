@@ -22,7 +22,6 @@ class CmsUserController extends BaseCmsController implements HasMiddleware
     /**
      * Create a new controller instance.
      *
-     * @param UserServiceInterface $userService
      * @return void
      */
     public function __construct(UserServiceInterface $userService)

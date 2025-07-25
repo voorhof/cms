@@ -43,5 +43,4 @@ class UpdateRoleRequest extends FormRequest
             'permissions.*' => 'nullable|string|max:225|exists:permissions,name',
         ];
     }
-
 }

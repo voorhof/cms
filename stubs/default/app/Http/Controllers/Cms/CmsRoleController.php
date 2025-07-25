@@ -23,7 +23,6 @@ class CmsRoleController extends BaseCmsController implements HasMiddleware
     /**
      * Create a new controller instance.
      *
-     * @param RoleServiceInterface $roleService
      * @return void
      */
     public function __construct(RoleServiceInterface $roleService)
