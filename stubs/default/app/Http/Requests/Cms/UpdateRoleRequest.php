@@ -6,9 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
-use Voorhof\Flash\Facades\Flash;
 
 class UpdateRoleRequest extends FormRequest
 {
@@ -47,32 +44,4 @@ class UpdateRoleRequest extends FormRequest
         ];
     }
 
-    /**
-     * Actions to perform after validation passes
-     */
-    public function actions(Role $role): Role
-    {
-        // Only update the role when it is not in secured_roles
-        if (! in_array($role->name, config('cms.secured_roles'))) {
-            $role->name = $this->safe()->name;
-            $role->save();
-
-            // Sync permissions
-            $role->syncPermissions($this->safe()->permissions ?? []);
-
-            Flash::success(__('Successful update!'));
-
-        } else {
-            // Re-sync all permissions with the admin role as a safety measure
-            // the super-admin doesn't need syncing; permissions are handled by a global gate inside the AppServiceProvider
-            if ($role->name === 'admin') {
-                $role->givePermissionTo(Permission::all());
-            }
-
-            Flash::danger(__('Unable to update!'));
-        }
-
-        // Return role
-        return $role;
-    }
 }

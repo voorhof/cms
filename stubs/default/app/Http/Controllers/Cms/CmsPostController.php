@@ -5,15 +5,31 @@ namespace App\Http\Controllers\Cms;
 use App\Http\Requests\Cms\StorePostRequest;
 use App\Http\Requests\Cms\UpdatePostRequest;
 use App\Models\Post;
+use App\Services\Cms\Contracts\PostServiceInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\View\View;
-use Voorhof\Flash\Facades\Flash;
 
 class CmsPostController extends BaseCmsController implements HasMiddleware
 {
+    /**
+     * The post service implementation.
+     */
+    protected PostServiceInterface $postService;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param PostServiceInterface $postService
+     * @return void
+     */
+    public function __construct(PostServiceInterface $postService)
+    {
+        $this->postService = $postService;
+    }
+
     /**
      * Get the middleware that should be assigned to the controller.
      */
@@ -54,7 +70,11 @@ class CmsPostController extends BaseCmsController implements HasMiddleware
      */
     public function store(StorePostRequest $request): RedirectResponse
     {
-        $post = $request->actions();
+        // The request is already validated through the StorePostRequest class
+        $post = $this->postService->createPost(
+            $request->validated(),
+            auth()->id()
+        );
 
         return redirect()->route(config('cms.route_name_prefix').'.posts.show', $post);
     }
@@ -80,9 +100,13 @@ class CmsPostController extends BaseCmsController implements HasMiddleware
      */
     public function update(UpdatePostRequest $request, Post $post): RedirectResponse
     {
-        $post = $request->actions($post);
+        // The request is already validated through the UpdatePostRequest class
+        $updatedPost = $this->postService->updatePost(
+            $post,
+            $request->validated()
+        );
 
-        return redirect()->route(config('cms.route_name_prefix').'.posts.show', $post);
+        return redirect()->route(config('cms.route_name_prefix').'.posts.show', $updatedPost);
     }
 
     /**
@@ -90,19 +114,11 @@ class CmsPostController extends BaseCmsController implements HasMiddleware
      */
     public function publish(Request $request, Post $post): RedirectResponse
     {
-        if ($post->published_at === null) {
-            $post->published_by = auth()->id();
-            $post->published_at = $request->published_at ?? now();
-
-            Flash::success(__('Published!'));
-        } else {
-            $post->published_by = null;
-            $post->published_at = null;
-
-            Flash::warning(__('Unpublished!'));
-        }
-
-        $post->save();
+        $post = $this->postService->togglePublishStatus(
+            $post,
+            $request->published_at,
+            auth()->id()
+        );
 
         return redirect()->route(config('cms.route_name_prefix').'.posts.show', $post);
     }
@@ -112,11 +128,7 @@ class CmsPostController extends BaseCmsController implements HasMiddleware
      */
     public function destroy(Post $post): RedirectResponse
     {
-        $post->published_at = null;
-        $post->save();
-        $post->delete();
-
-        Flash::warning(__('Successful delete!'));
+        $this->postService->deletePost($post);
 
         return redirect()->route(config('cms.route_name_prefix').'.posts.index');
     }
@@ -139,9 +151,7 @@ class CmsPostController extends BaseCmsController implements HasMiddleware
      */
     public function restore(Post $post): RedirectResponse
     {
-        $post->restore();
-
-        Flash::success(__('Successful restore!'));
+        $post = $this->postService->restorePost($post);
 
         return redirect()->route(config('cms.route_name_prefix').'.posts.show', $post);
     }
@@ -151,9 +161,7 @@ class CmsPostController extends BaseCmsController implements HasMiddleware
      */
     public function delete(Post $post): RedirectResponse
     {
-        $post->forceDelete();
-
-        Flash::warning(__('Successful delete!'));
+        $this->postService->forceDeletePost($post);
 
         return redirect()->route(config('cms.route_name_prefix').'.posts.trash');
     }
@@ -163,13 +171,7 @@ class CmsPostController extends BaseCmsController implements HasMiddleware
      */
     public function emptyTrash(): RedirectResponse
     {
-        defer(function () {
-            foreach (Post::onlyTrashed()->get() as $post) {
-                $post->forceDelete();
-            }
-        });
-
-        Flash::warning(__('Successful delete!'));
+        $this->postService->emptyTrash();
 
         return redirect()->route(config('cms.route_name_prefix').'.posts.index');
     }

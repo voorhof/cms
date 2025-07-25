@@ -72,6 +72,10 @@ trait FileOperations
         }
         copy($this->stubPath.'/default/app/Providers/AppServiceProvider.php', $appProvider);
 
+        // // Services
+        $this->filesystem->ensureDirectoryExists(app_path('Services/Cms'));
+        $this->filesystem->copyDirectory($this->stubPath.'/default/app/Services/Cms', app_path('Services/Cms'));
+
         // // Components
         $this->filesystem->ensureDirectoryExists(app_path('View/Components'));
         copy($this->stubPath.'/default/app/View/Components/CmsLayout.php', app_path('View/Components/CmsLayout.php'));

@@ -5,8 +5,6 @@ namespace App\Http\Requests\Cms;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Spatie\Permission\Models\Role;
-use Voorhof\Flash\Facades\Flash;
 
 class StoreRoleRequest extends FormRequest
 {
@@ -43,23 +41,5 @@ class StoreRoleRequest extends FormRequest
             'name' => 'required|string|max:32|unique:roles',
             'permissions.*' => 'nullable|string|max:225|exists:permissions,name',
         ];
-    }
-
-    /**
-     * Actions to perform after validation passes
-     */
-    public function actions(): Role
-    {
-        // Create a new role
-        $role = Role::create(['name' => $this->safe()->name]);
-
-        // Sync permissions
-        $role->syncPermissions($this->safe()->permissions ?? []);
-
-        // Flash message:
-        Flash::success(__('Successful creation!'));
-
-        // Return role
-        return $role;
     }
 }

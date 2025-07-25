@@ -2,12 +2,9 @@
 
 namespace App\Http\Requests\Cms;
 
-use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
-use Voorhof\Flash\Facades\Flash;
 
 class StoreUserRequest extends FormRequest
 {
@@ -35,34 +32,5 @@ class StoreUserRequest extends FormRequest
             'email' => 'required|email|max:255|unique:users',
             'role' => ['nullable', 'string', 'max:255', 'exists:roles,name', Rule::notIn(config('cms.secured_roles'))],
         ];
-    }
-
-    /**
-     * Actions to perform after validation passes
-     */
-    public function actions(): User
-    {
-        // Create a new user
-        $user = new User($this->safe()->only([
-            'name',
-            'email',
-        ]));
-
-        // Create a random password
-        $user->password = Hash::make(str()->random(12));
-
-        // Save user
-        $user->save();
-
-        // Assign a role to user
-        if (Auth::user()->can('manage roles')) {
-            $user->syncRoles([$this->safe()->role ?? null]);
-        }
-
-        // Flash message:
-        Flash::success(__('Successful creation!'));
-
-        // Return user
-        return $user;
     }
 }

@@ -2,10 +2,8 @@
 
 namespace App\Http\Requests\Cms;
 
-use App\Models\Post;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
-use Voorhof\Flash\Facades\Flash;
 
 class UpdatePostRequest extends FormRequest
 {
@@ -36,23 +34,5 @@ class UpdatePostRequest extends FormRequest
             'title' => 'required|string|max:255',
             'body' => 'required|string',
         ];
-    }
-
-    /**
-     * Actions to perform after validation passes
-     */
-    public function actions(Post $post): Post
-    {
-        // Update post
-        $post->update($this->safe()->only([
-            'title',
-            'body',
-        ]));
-
-        // Flash message
-        Flash::success(__('Successful update!'));
-
-        // Return post
-        return $post;
     }
 }

@@ -5,16 +5,31 @@ namespace App\Http\Controllers\Cms;
 use App\Http\Requests\Cms\StoreUserRequest;
 use App\Http\Requests\Cms\UpdateUserRequest;
 use App\Models\User;
+use App\Services\Cms\Contracts\UserServiceInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Spatie\Permission\Models\Role;
-use Voorhof\Flash\Facades\Flash;
 
 class CmsUserController extends BaseCmsController implements HasMiddleware
 {
+    /**
+     * The user service implementation.
+     */
+    protected UserServiceInterface $userService;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param UserServiceInterface $userService
+     * @return void
+     */
+    public function __construct(UserServiceInterface $userService)
+    {
+        $this->userService = $userService;
+    }
+
     /**
      * Get the middleware that should be assigned to the controller.
      */
@@ -33,6 +48,7 @@ class CmsUserController extends BaseCmsController implements HasMiddleware
         $users = User::with('roles')
             ->orderBy('name')
             ->get();
+
         $usersTrashCount = User::onlyTrashed()->count();
 
         return view('cms.users.index', compact('users', 'usersTrashCount'));
@@ -55,7 +71,11 @@ class CmsUserController extends BaseCmsController implements HasMiddleware
      */
     public function store(StoreUserRequest $request): RedirectResponse
     {
-        $user = $request->actions();
+        // The request is already validated through the StoreUserRequest class
+        $user = $this->userService->createUser(
+            $request->safe()->only(['name', 'email']),
+            $request->safe()->role ?? null
+        );
 
         return redirect()->route(config('cms.route_name_prefix').'.users.show', $user);
     }
@@ -85,9 +105,14 @@ class CmsUserController extends BaseCmsController implements HasMiddleware
      */
     public function update(UpdateUserRequest $request, User $user): RedirectResponse
     {
-        $user = $request->actions($user);
+        // The request is already validated through the UpdateUserRequest class
+        $updatedUser = $this->userService->updateUser(
+            $user,
+            $request->safe()->only(['name', 'email']),
+            $request->safe()->role ?? null
+        );
 
-        return redirect()->route(config('cms.route_name_prefix').'.users.show', $user);
+        return redirect()->route(config('cms.route_name_prefix').'.users.show', $updatedUser);
     }
 
     /**
@@ -95,17 +120,9 @@ class CmsUserController extends BaseCmsController implements HasMiddleware
      */
     public function destroy(User $user): RedirectResponse
     {
-        // only delete the user when it does not have the super-admin role (or when the auth user is a super-admin)
-        if (! $user->hasRole('super-admin') || Auth::user()->hasRole('super-admin')) {
-            $user->email_verified_at = null;
-            $user->save();
-            $user->delete();
+        $success = $this->userService->deleteUser($user);
 
-            Flash::warning(__('Successful delete!'));
-
-        } else {
-            Flash::danger(__('Unable to delete!'));
-
+        if (! $success) {
             return redirect()->route(config('cms.route_name_prefix').'.users.show', $user);
         }
 
@@ -117,7 +134,9 @@ class CmsUserController extends BaseCmsController implements HasMiddleware
      */
     public function trash(): View
     {
-        $users = User::onlyTrashed()->orderBy('name')->get();
+        $users = User::onlyTrashed()
+            ->orderBy('name')
+            ->get();
 
         return view('cms.users.trash', compact('users'));
     }
@@ -127,9 +146,7 @@ class CmsUserController extends BaseCmsController implements HasMiddleware
      */
     public function restore(User $user): RedirectResponse
     {
-        $user->restore();
-
-        Flash::success(__('Successful restore!'));
+        $user = $this->userService->restoreUser($user);
 
         return redirect()->route(config('cms.route_name_prefix').'.users.show', $user);
     }
@@ -139,9 +156,7 @@ class CmsUserController extends BaseCmsController implements HasMiddleware
      */
     public function delete(User $user): RedirectResponse
     {
-        $user->forceDelete();
-
-        Flash::warning(__('Successful delete!'));
+        $this->userService->forceDeleteUser($user);
 
         return redirect()->route(config('cms.route_name_prefix').'.users.trash');
     }
@@ -151,13 +166,7 @@ class CmsUserController extends BaseCmsController implements HasMiddleware
      */
     public function emptyTrash(): RedirectResponse
     {
-        defer(function () {
-            foreach (User::onlyTrashed()->get() as $user) {
-                $user->forceDelete();
-            }
-        });
-
-        Flash::warning(__('Successful delete!'));
+        $this->userService->emptyTrash();
 
         return redirect()->route(config('cms.route_name_prefix').'.users.index');
     }

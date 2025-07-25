@@ -5,16 +5,32 @@ namespace App\Http\Controllers\Cms;
 use App\Http\Requests\Cms\StoreRoleRequest;
 use App\Http\Requests\Cms\UpdateRoleRequest;
 use App\Models\User;
+use App\Services\Cms\Contracts\RoleServiceInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\View\View;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
-use Voorhof\Flash\Facades\Flash;
 
 class CmsRoleController extends BaseCmsController implements HasMiddleware
 {
+    /**
+     * The role service implementation.
+     */
+    protected RoleServiceInterface $roleService;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @param RoleServiceInterface $roleService
+     * @return void
+     */
+    public function __construct(RoleServiceInterface $roleService)
+    {
+        $this->roleService = $roleService;
+    }
+
     /**
      * Get the middleware that should be assigned to the controller.
      */
@@ -52,7 +68,11 @@ class CmsRoleController extends BaseCmsController implements HasMiddleware
      */
     public function store(StoreRoleRequest $request): RedirectResponse
     {
-        $role = $request->actions();
+        // The request is already validated through the StoreRoleRequest class
+        $role = $this->roleService->createRole(
+            $request->safe()->name,
+            $request->safe()->permissions ?? []
+        );
 
         return redirect()->route(config('cms.route_name_prefix').'.roles.show', $role);
     }
@@ -85,9 +105,14 @@ class CmsRoleController extends BaseCmsController implements HasMiddleware
      */
     public function update(UpdateRoleRequest $request, Role $role): RedirectResponse
     {
-        $role = $request->actions($role);
+        // The request is already validated through the UpdateRoleRequest class
+        $updatedRole = $this->roleService->updateRole(
+            $role,
+            $request->safe()->name,
+            $request->safe()->permissions ?? []
+        );
 
-        return redirect()->route(config('cms.route_name_prefix').'.roles.show', $role);
+        return redirect()->route(config('cms.route_name_prefix').'.roles.show', $updatedRole);
     }
 
     /**
@@ -95,15 +120,9 @@ class CmsRoleController extends BaseCmsController implements HasMiddleware
      */
     public function destroy(Role $role): RedirectResponse
     {
-        // Only delete the role when it is not in secured_roles
-        if (! in_array($role->name, config('cms.secured_roles'))) {
-            $role->delete();
+        $success = $this->roleService->deleteRole($role);
 
-            Flash::warning(__('Successful delete!'));
-
-        } else {
-            Flash::danger(__('Unable to delete!'));
-
+        if (! $success) {
             return redirect()->route(config('cms.route_name_prefix').'.roles.show', $role);
         }
 
