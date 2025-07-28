@@ -34,7 +34,7 @@
                             <x-cms.input-label for="name" :value="__('Name')" />
                             <x-cms.input-text type="text" id="name" name="name"
                                               :value="old('name') ?? $role->name" :isInvalid="$errors->has('name')"
-                                              required maxlength="32" :readonly="in_array($role->name, config('cms.secured_roles'))"/>
+                                              required maxlength="32" />
                             <x-cms.input-error :messages="$errors->get('name')" :defaultMessage="__('This field is required.')" />
                         </div>
 
@@ -49,8 +49,7 @@
                                     <input class="form-check-input {{ $errors->has('permissions.*') ? 'is-invalid' : '' }}"
                                            type="checkbox" value="{{ $permission }}"
                                            name="permissions[]" id="permission{{ $loop->index }}"
-                                           {{ (is_array(old('permissions')) && in_array($permission, old('permissions')) || $role->hasPermissionTo($permission)) ? 'checked' : '' }}
-                                           {{ in_array($role->name, config('cms.secured_roles')) ? 'disabled' : '' }}>
+                                        {{ (is_array(old('permissions')) && in_array($permission, old('permissions')) || $role->hasPermissionTo($permission)) ? 'checked' : '' }}>
                                     <label class="form-check-label text-capitalize" for="permission{{ $loop->index }}">
                                         {{ $permission }}
                                     </label>

@@ -1,8 +1,8 @@
 <?php
 
+use App\Models\Role;
 use App\Models\User;
 use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 
 beforeEach(function () {
     // Create necessary permissions
@@ -200,7 +200,7 @@ test('super-admin role cannot be updated', function () {
         ->actingAs($this->userWithPermission)
         ->put(route(config('cms.route_name_prefix').'.roles.update', $superAdminRole), $updatedData);
 
-    $response->assertRedirect(route(config('cms.route_name_prefix').'.roles.show', $superAdminRole));
+    $response->assertForbidden();
     $this->assertDatabaseMissing('roles', [
         'id' => $superAdminRole->id,
         'name' => 'trying-to-update-super-admin',
@@ -218,7 +218,7 @@ test('admin role cannot be updated', function () {
         ->actingAs($this->userWithPermission)
         ->put(route(config('cms.route_name_prefix').'.roles.update', $adminRole), $updatedData);
 
-    $response->assertRedirect(route(config('cms.route_name_prefix').'.roles.show', $adminRole));
+    $response->assertForbidden();
     $this->assertDatabaseMissing('roles', [
         'id' => $adminRole->id,
         'name' => 'trying-to-update-admin',
@@ -255,7 +255,7 @@ test('super-admin role cannot be deleted', function () {
         ->actingAs($this->userWithPermission)
         ->delete(route(config('cms.route_name_prefix').'.roles.destroy', $superAdminRole));
 
-    $response->assertRedirect(route(config('cms.route_name_prefix').'.roles.show', $superAdminRole));
+    $response->assertForbidden();
     $this->assertDatabaseHas('roles', [
         'id' => $superAdminRole->id,
     ]);
@@ -268,7 +268,7 @@ test('admin role cannot be deleted', function () {
         ->actingAs($this->userWithPermission)
         ->delete(route(config('cms.route_name_prefix').'.roles.destroy', $adminRole));
 
-    $response->assertRedirect(route(config('cms.route_name_prefix').'.roles.show', $adminRole));
+    $response->assertForbidden();
     $this->assertDatabaseHas('roles', [
         'id' => $adminRole->id,
     ]);

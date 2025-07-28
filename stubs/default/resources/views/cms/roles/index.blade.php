@@ -1,3 +1,4 @@
+@php use App\Models\Role; @endphp
 <x-cms-layout>
     <x-slot name="header">
         <h1 class="fs-2 text-center mb-0">
@@ -6,9 +7,10 @@
         </h1>
     </x-slot>
 
-    @can('manage roles')
+    @can('create', Role::class)
         <x-slot name="actionButtons">
-            <a class="btn btn-outline-primary btn-sm lh-sm" href="{{ route(config('cms.route_name_prefix').'.roles.create') }}">
+            <a class="btn btn-outline-primary btn-sm lh-sm"
+               href="{{ route(config('cms.route_name_prefix').'.roles.create') }}">
                 <i class="bi bi-plus-circle"></i> {{ __('New role') }}
             </a>
         </x-slot>

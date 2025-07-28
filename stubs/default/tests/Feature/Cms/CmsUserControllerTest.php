@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class CmsUserControllerTest extends TestCase
@@ -285,7 +285,7 @@ class CmsUserControllerTest extends TestCase
 
         $response = $this
             ->actingAs($this->userWithPermission)
-            ->get(route(config('cms.route_name_prefix').'.users.trash'));
+            ->get(route(config('cms.route_name_prefix').'.users.viewTrash'));
 
         $response->assertOk();
         $response->assertViewIs('cms.users.trash');
@@ -296,7 +296,7 @@ class CmsUserControllerTest extends TestCase
     {
         $response = $this
             ->actingAs($this->userWithoutPermission)
-            ->get(route(config('cms.route_name_prefix').'.users.trash'));
+            ->get(route(config('cms.route_name_prefix').'.users.viewTrash'));
 
         $response->assertForbidden();
     }
@@ -342,7 +342,7 @@ class CmsUserControllerTest extends TestCase
             ->actingAs($this->userWithPermission)
             ->delete(route(config('cms.route_name_prefix').'.users.delete', $this->testUser));
 
-        $response->assertRedirect(route(config('cms.route_name_prefix').'.users.trash'));
+        $response->assertRedirect(route(config('cms.route_name_prefix').'.users.viewTrash'));
         $this->assertDatabaseMissing('users', [
             'id' => $this->testUser->id,
         ]);

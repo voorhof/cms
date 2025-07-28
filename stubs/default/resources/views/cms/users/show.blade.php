@@ -1,3 +1,4 @@
+@php use App\Models\Role; @endphp
 <x-cms-layout>
     <x-slot name="header">
         <h1 class="fs-2 text-center mb-0">
@@ -11,15 +12,57 @@
             <i class="bi bi-arrow-left"></i> {{ __('All users') }}
         </a>
 
-        @can('manage users')
-            <a class="btn btn-outline-primary btn-sm lh-sm ms-sm-auto" href="{{ route(config('cms.route_name_prefix').'.users.edit', $user) }}">
+        @can('update', $user)
+            <a class="btn btn-outline-primary btn-sm lh-sm ms-sm-auto"
+               href="{{ route(config('cms.route_name_prefix').'.users.edit', $user) }}">
                 <i class="bi bi-pencil-square"></i> {{ __('Edit user') }}
             </a>
+        @endcan
 
+        @can('delete', $user)
             {{-- Trigger delete user modal --}}
-            <x-cms.button type="button" class="btn-outline-danger btn-sm lh-sm" data-bs-toggle="modal" data-bs-target="#deleteUserModal">
+            <x-cms.button type="button" class="btn-outline-danger btn-sm lh-sm" data-bs-toggle="modal"
+                          data-bs-target="#deleteUserModal">
                 <i class="bi bi-trash"></i> {{ __('Delete user') }}
             </x-cms.button>
+
+            {{-- Delete user modal--}}
+            @push('modals')
+                <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2 class="modal-title fs-5" id="deleteUserModalLabel">
+                                    {{ __('Delete user') .': ' . $user->name }}
+                                </h2>
+
+                                <x-cms.button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"/>
+                            </div>
+
+                            <div class="modal-body">
+                                {{ __('Are you sure?') }}
+                            </div>
+
+                            <div class="modal-footer justify-content-between">
+                                <x-cms.button type="button" class="btn-secondary" data-bs-dismiss="modal">
+                                    {{ __('Cancel') }}
+                                </x-cms.button>
+
+                                {{-- Delete user form --}}
+                                <form method="POST"
+                                      action="{{ route(config('cms.route_name_prefix').'.users.destroy', $user) }}">
+                                    @csrf
+                                    @method('DELETE')
+                                    <x-cms.button class="btn-danger">
+                                        <i class="bi bi-trash"></i> {{ __('Delete') }}
+                                    </x-cms.button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endpush
         @endcan
     </x-slot>
 
@@ -70,7 +113,7 @@
                     </table>
                 </div>
 
-                @can('manage roles')
+                @can('viewAny', Role::class)
                     <div class="col-auto">
                         <h3 class="fs-5">
                             {{ __('Role') }}
@@ -84,9 +127,14 @@
                                     <li class="text-capitalize">
                                         <i class="bi bi-shield-lock"></i>
 
-                                        <a href="{{ route(config('cms.route_name_prefix').'.roles.show', $role) }}" class="link-dark ms-1">
+                                        @can('view', $role)
+                                            <a href="{{ route(config('cms.route_name_prefix').'.roles.show', $role) }}"
+                                               class="link-dark ms-1">
+                                                {{ $role->name }}
+                                            </a>
+                                        @else
                                             {{ $role->name }}
-                                        </a>
+                                        @endcan
                                     </li>
 
                                     @if($loop->last)
@@ -124,42 +172,4 @@
             </div>
         </div>
     </div>
-
-    {{-- Delete user modal--}}
-    @push('modals')
-        @can('manage users')
-            <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h2 class="modal-title fs-5" id="deleteUserModalLabel">
-                                {{ __('Delete user') .': ' . $user->name }}
-                            </h2>
-
-                            <x-cms.button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" />
-                        </div>
-
-                        <div class="modal-body">
-                            {{ __('Are you sure?') }}
-                        </div>
-
-                        <div class="modal-footer justify-content-between">
-                            <x-cms.button type="button" class="btn-secondary" data-bs-dismiss="modal">
-                                {{ __('Cancel') }}
-                            </x-cms.button>
-
-                            {{-- Delete user form --}}
-                            <form method="POST" action="{{ route(config('cms.route_name_prefix').'.users.destroy', $user) }}">
-                                @csrf
-                                @method('DELETE')
-                                <x-cms.button class="btn-danger">
-                                    <i class="bi bi-trash"></i> {{ __('Delete') }}
-                                </x-cms.button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endcan
-    @endpush
 </x-cms-layout>

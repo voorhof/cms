@@ -1,3 +1,4 @@
+@php use App\Models\User; @endphp
 <x-cms-layout>
     <x-slot name="header">
         <h1 class="fs-2 text-center mb-0">
@@ -11,7 +12,7 @@
             <i class="bi bi-arrow-left"></i> {{ __('All users') }}
         </a>
 
-        @can('manage users')
+        @can('emptyTrash', User::class)
             {{-- Trash all users --}}
             <form method="POST" action="{{ route(config('cms.route_name_prefix').'.users.emptyTrash') }}" class="ms-auto">
                 @csrf
@@ -37,25 +38,31 @@
 
                         <li class="d-flex align-items-center gap-2 mb-2">
                             {{-- Delete form --}}
-                            <form method="POST" action="{{ route(config('cms.route_name_prefix').'.users.delete', $user) }}">
-                                @csrf
-                                @method('DELETE')
-                                <x-cms.button class="btn-danger btn-sm lh-sm">
-                                    <i class="bi bi-trash"></i> {{ __('Delete') }}
-                                </x-cms.button>
-                            </form>
+                            @can('forceDelete', $user)
+                                <form method="POST" action="{{ route(config('cms.route_name_prefix').'.users.delete', $user) }}">
+                                    @csrf
+                                    @method('DELETE')
+                                    <x-cms.button class="btn-danger btn-sm lh-sm">
+                                        <i class="bi bi-trash"></i> {{ __('Delete') }}
+                                    </x-cms.button>
+                                </form>
+                            @endcan
 
                             {{-- Restore form --}}
-                            <form method="POST" action="{{ route(config('cms.route_name_prefix').'.users.restore', $user) }}">
-                                @csrf
-                                @method('PATCH')
-                                <x-cms.button class="btn-warning btn-sm lh-sm">
-                                    <i class="bi bi-arrow-counterclockwise"></i> {{ __('Restore') }}
-                                </x-cms.button>
-                            </form>
+                            @can('restore', $user)
+                                <form method="POST" action="{{ route(config('cms.route_name_prefix').'.users.restore', $user) }}">
+                                    @csrf
+                                    @method('PATCH')
+                                    <x-cms.button class="btn-warning btn-sm lh-sm">
+                                        <i class="bi bi-arrow-counterclockwise"></i> {{ __('Restore') }}
+                                    </x-cms.button>
+                                </form>
+                            @endcan
 
                             {{-- User name --}}
-                            <strong class="fs-5">{{ $user->name }}</strong>
+                            <strong class="fs-5">
+                                {{ $user->name }}
+                            </strong>
                         </li>
 
                         @if($loop->last)

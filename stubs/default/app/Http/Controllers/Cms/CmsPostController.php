@@ -15,19 +15,14 @@ use Illuminate\View\View;
 class CmsPostController extends BaseCmsController implements HasMiddleware
 {
     /**
-     * The post service implementation.
-     */
-    protected PostServiceInterface $postService;
-
-    /**
-     * Create a new controller instance.
+     * Create a new controller instance,
+     * with the post service implementation.
      *
      * @return void
      */
-    public function __construct(PostServiceInterface $postService)
-    {
-        $this->postService = $postService;
-    }
+    public function __construct(
+        protected PostServiceInterface $postService
+    ) {}
 
     /**
      * Get the middleware that should be assigned to the controller.
@@ -35,10 +30,16 @@ class CmsPostController extends BaseCmsController implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('permission:manage posts|create post', only: ['create', 'store']),
-            new Middleware('permission:manage posts|edit post', only: ['edit', 'update']),
-            new Middleware('permission:manage posts|publish post', only: ['publish']),
-            new Middleware('permission:manage posts', only: ['destroy', 'trash', 'restore', 'delete', 'emptyTrash']),
+            new Middleware('can:viewAny,App\Models\Post', only: ['index']),
+            new Middleware('can:view,post', only: ['show']),
+            new Middleware('can:create,App\Models\Post', only: ['create', 'store']),
+            new Middleware('can:update,post', only: ['edit', 'update']),
+            new Middleware('can:publish,post', only: ['publish']),
+            new Middleware('can:delete,post', only: ['destroy']),
+            new Middleware('can:restore,post', only: ['restore']),
+            new Middleware('can:forceDelete,post', only: ['delete']),
+            new Middleware('can:viewTrash,App\Models\Post', only: ['viewTrash']),
+            new Middleware('can:emptyTrash,App\Models\Post', only: ['emptyTrash']),
         ];
     }
 
@@ -135,7 +136,7 @@ class CmsPostController extends BaseCmsController implements HasMiddleware
     /**
      * Display a listing of soft deleted resource.
      */
-    public function trash(): View
+    public function viewTrash(): View
     {
         $posts = Post::onlyTrashed()
             ->with('user')
@@ -162,7 +163,7 @@ class CmsPostController extends BaseCmsController implements HasMiddleware
     {
         $this->postService->forceDeletePost($post);
 
-        return redirect()->route(config('cms.route_name_prefix').'.posts.trash');
+        return redirect()->route(config('cms.route_name_prefix').'.posts.viewTrash');
     }
 
     /**

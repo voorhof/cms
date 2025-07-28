@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Cms;
 
+use App\Models\Post;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 
 class StorePostRequest extends FormRequest
 {
@@ -12,15 +12,7 @@ class StorePostRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if (Auth::user()->can('manage posts')) {
-            return true;
-        }
-
-        if (Auth::user()->can('create post')) {
-            return true;
-        }
-
-        return false;
+        return $this->user()->can('create', Post::class);
     }
 
     /**

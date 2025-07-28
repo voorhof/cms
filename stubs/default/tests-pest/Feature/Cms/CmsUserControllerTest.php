@@ -1,8 +1,8 @@
 <?php
 
+use App\Models\Role;
 use App\Models\User;
 use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 
 beforeEach(function () {
     // Create necessary permissions
@@ -251,7 +251,7 @@ test('trash page is displayed for user with manage users permission', function (
 
     $response = $this
         ->actingAs($this->userWithPermission)
-        ->get(route(config('cms.route_name_prefix').'.users.trash'));
+        ->get(route(config('cms.route_name_prefix').'.users.viewTrash'));
 
     $response->assertOk();
     $response->assertViewIs('cms.users.trash');
@@ -261,7 +261,7 @@ test('trash page is displayed for user with manage users permission', function (
 test('trash page is forbidden for user without manage users permission', function () {
     $response = $this
         ->actingAs($this->userWithoutPermission)
-        ->get(route(config('cms.route_name_prefix').'.users.trash'));
+        ->get(route(config('cms.route_name_prefix').'.users.viewTrash'));
 
     $response->assertForbidden();
 });
@@ -304,7 +304,7 @@ test('delete permanently deletes a soft deleted user when user has manage users 
         ->actingAs($this->userWithPermission)
         ->delete(route(config('cms.route_name_prefix').'.users.delete', $this->testUser));
 
-    $response->assertRedirect(route(config('cms.route_name_prefix').'.users.trash'));
+    $response->assertRedirect(route(config('cms.route_name_prefix').'.users.viewTrash'));
     $this->assertDatabaseMissing('users', [
         'id' => $this->testUser->id,
     ]);

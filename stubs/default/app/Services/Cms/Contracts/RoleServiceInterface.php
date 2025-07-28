@@ -2,7 +2,7 @@
 
 namespace App\Services\Cms\Contracts;
 
-use Spatie\Permission\Models\Role;
+use App\Models\Role;
 
 interface RoleServiceInterface
 {
@@ -28,8 +28,7 @@ interface RoleServiceInterface
     /**
      * Delete a role
      *
-     * @param  Role  $role  The role to delete
-     * @return bool Whether the deletion was successful
+     * @param  Role  $role  The role to permanently delete
      */
-    public function deleteRole(Role $role): bool;
+    public function deleteRole(Role $role): void;
 }

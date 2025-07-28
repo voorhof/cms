@@ -24,7 +24,7 @@ return [
          * `Spatie\Permission\Contracts\Role` contract.
          */
 
-        'role' => Spatie\Permission\Models\Role::class,
+        'role' => App\Models\Role::class,
 
     ],
 
@@ -48,7 +48,7 @@ return [
 
         /*
          * When using the "HasPermissions" trait from this package, we need to know which
-         * table should be used to retrieve your model's permissions. We have chosen a
+         * table should be used to retrieve your models' permissions. We have chosen a
          * basic default value, but you may change it to any table you like.
          */
 
@@ -56,7 +56,7 @@ return [
 
         /*
          * When using the "HasRoles" trait from this package, we need to know which
-         * table should be used to retrieve your model's roles. We have chosen a
+         * table should be used to retrieve your models' roles. We have chosen a
          * basic default value, but you may change it to any table you like.
          */
 
@@ -64,7 +64,7 @@ return [
 
         /*
          * When using the "HasRoles" trait from this package, we need to know which
-         * table should be used to retrieve your role's permissions. We have chosen a
+         * table should be used to retrieve your roles' permissions. We have chosen a
          * basic default value, but you may change it to any table you like.
          */
 
@@ -140,7 +140,7 @@ return [
 
     /*
      * Passport Client Credentials Grant
-     * When set to true, the package will use Passport's Client to check permissions
+     * When set to true, the package will use Passport Client to check permissions
      */
 
     'use_passport_client_credentials' => false,
@@ -183,7 +183,7 @@ return [
          * When permissions or roles are updated, the cache is flushed automatically.
          */
 
-        'expiration_time' => \DateInterval::createFromDateString('24 hours'),
+        'expiration_time' => DateInterval::createFromDateString('24 hours'),
 
         /*
          * The cache key used to store all permissions.

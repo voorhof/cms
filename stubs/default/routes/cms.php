@@ -21,7 +21,7 @@ Route::middleware(config('cms.route_middleware'))
         /**
          * Post resource controller
          */
-        Route::get('/posts/trash', [CmsPostController::class, 'trash'])->name('posts.trash');
+        Route::get('/posts/trash', [CmsPostController::class, 'viewTrash'])->name('posts.viewTrash');
         Route::delete('/posts/trash', [CmsPostController::class, 'emptyTrash'])->name('posts.emptyTrash');
         Route::patch('/posts/{post}/restore', [CmsPostController::class, 'restore'])->name('posts.restore')->withTrashed();
         Route::delete('/posts/{post}/delete', [CmsPostController::class, 'delete'])->name('posts.delete')->withTrashed();
@@ -31,7 +31,7 @@ Route::middleware(config('cms.route_middleware'))
         /**
          * User resource controller
          */
-        Route::get('/users/trash', [CmsUserController::class, 'trash'])->name('users.trash');
+        Route::get('/users/trash', [CmsUserController::class, 'viewTrash'])->name('users.viewTrash');
         Route::delete('/users/trash', [CmsUserController::class, 'emptyTrash'])->name('users.emptyTrash');
         Route::patch('/users/{user}/restore', [CmsUserController::class, 'restore'])->name('users.restore')->withTrashed();
         Route::delete('/users/{user}/delete', [CmsUserController::class, 'delete'])->name('users.delete')->withTrashed();

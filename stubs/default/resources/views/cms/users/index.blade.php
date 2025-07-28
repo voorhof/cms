@@ -1,3 +1,4 @@
+@php use App\Models\User; @endphp
 <x-cms-layout>
     <x-slot name="header">
         <h1 class="fs-2 text-center mb-0">
@@ -6,18 +7,26 @@
         </h1>
     </x-slot>
 
-    @can('manage users')
+    @canany(['create', 'viewTrash'], User::class)
         <x-slot name="actionButtons">
-            <a class="btn btn-outline-primary btn-sm lh-sm" href="{{ route(config('cms.route_name_prefix').'.users.create') }}">
-                <i class="bi bi-plus-circle"></i> {{ __('New user') }}
-            </a>
+            @can('create', User::class)
+                <a class="btn btn-outline-primary btn-sm lh-sm"
+                   href="{{ route(config('cms.route_name_prefix').'.users.create') }}">
+                    <i class="bi bi-plus-circle"></i> {{ __('New user') }}
+                </a>
+            @endcan
 
-            <a class="btn btn-outline-secondary btn-sm lh-sm ms-sm-auto" href="{{ route(config('cms.route_name_prefix').'.users.trash') }}">
-                <i class="bi bi-trash"></i> {{ __('Trash') }}
-                <span class="{{ $usersTrashCount > 0 ? 'fw-bold' : 'fw-light' }}">{{ '(' . $usersTrashCount . ')' }}</span>
-            </a>
+            @can('viewTrash', User::class)
+                <a class="btn btn-outline-secondary btn-sm lh-sm ms-sm-auto"
+                   href="{{ route(config('cms.route_name_prefix').'.users.viewTrash') }}">
+                    <i class="bi bi-trash"></i> {{ __('Trash') }}
+                    <span class="{{ $usersTrashCount > 0 ? 'fw-bold' : 'fw-light' }}">
+                        {{ '(' . $usersTrashCount . ')' }}
+                    </span>
+                </a>
+            @endcan
         </x-slot>
-    @endcan
+    @endcanany
 
     {{-- $slot --}}
     <div class="row">

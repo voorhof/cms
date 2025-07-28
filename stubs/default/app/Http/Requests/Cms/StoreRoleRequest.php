@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Cms;
 
+use App\Models\Role;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class StoreRoleRequest extends FormRequest
@@ -13,11 +13,7 @@ class StoreRoleRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if (Auth::user()->can('manage roles')) {
-            return true;
-        }
-
-        return false;
+        return $this->user()->can('create', Role::class);
     }
 
     /**

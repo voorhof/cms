@@ -1,9 +1,9 @@
 <?php
 
 use App\Models\Post;
+use App\Models\Role;
 use App\Models\User;
 use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 
 beforeEach(function () {
     // Create necessary permissions
@@ -308,7 +308,7 @@ test('trash page is displayed for user with manage posts permission', function (
 
     $response = $this
         ->actingAs($this->userWithFullPermission)
-        ->get(route(config('cms.route_name_prefix').'.posts.trash'));
+        ->get(route(config('cms.route_name_prefix').'.posts.viewTrash'));
 
     $response->assertOk();
     $response->assertViewIs('cms.posts.trash');
@@ -318,7 +318,7 @@ test('trash page is displayed for user with manage posts permission', function (
 test('trash page is forbidden for user without manage posts permission', function () {
     $response = $this
         ->actingAs($this->userWithLimitedPermission)
-        ->get(route(config('cms.route_name_prefix').'.posts.trash'));
+        ->get(route(config('cms.route_name_prefix').'.posts.viewTrash'));
 
     $response->assertForbidden();
 });
@@ -361,7 +361,7 @@ test('delete permanently deletes a soft deleted post when user has manage posts 
         ->actingAs($this->userWithFullPermission)
         ->delete(route(config('cms.route_name_prefix').'.posts.delete', $this->testPost));
 
-    $response->assertRedirect(route(config('cms.route_name_prefix').'.posts.trash'));
+    $response->assertRedirect(route(config('cms.route_name_prefix').'.posts.viewTrash'));
     $this->assertDatabaseMissing('posts', [
         'id' => $this->testPost->id,
     ]);

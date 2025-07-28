@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Policies\PostPolicy;
 use Database\Factories\PostFactory;
+use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+#[UsePolicy(PostPolicy::class)]
 class Post extends Model
 {
     /** @use HasFactory<PostFactory> */

@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Cms;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
@@ -14,11 +13,7 @@ class UpdateRoleRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if (Auth::user()->can('manage roles')) {
-            return true;
-        }
-
-        return false;
+        return $this->user()->can('update', $this->route('role'));
     }
 
     /**

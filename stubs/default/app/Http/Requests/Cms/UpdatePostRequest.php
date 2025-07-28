@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Cms;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 
 class UpdatePostRequest extends FormRequest
 {
@@ -12,15 +11,7 @@ class UpdatePostRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if (Auth::user()->can('manage posts')) {
-            return true;
-        }
-
-        if (Auth::user()->can('edit post')) {
-            return true;
-        }
-
-        return false;
+        return $this->user()->can('update', $this->route('post'));
     }
 
     /**

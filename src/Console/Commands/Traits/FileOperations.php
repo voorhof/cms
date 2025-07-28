@@ -55,12 +55,23 @@ trait FileOperations
         }
         copy($this->stubPath.'/default/app/Models/User.php', $userModel);
 
+        $roleModel = app_path('Models/Role.php');
+        $roleModelBackup = app_path('Models/Role.php.backup-cms');
+        if (! file_exists($roleModelBackup) && $this->argument('backup')) {
+            copy($roleModel, $roleModelBackup);
+        }
+        copy($this->stubPath.'/default/app/Models/Role.php', $roleModel);
+
         $postModel = app_path('Models/Post.php');
         $postModelBackup = app_path('Models/Post.php.backup-cms');
         if (! file_exists($postModelBackup) && $this->argument('backup')) {
             copy($postModel, $postModelBackup);
         }
         copy($this->stubPath.'/default/app/Models/Post.php', $postModel);
+
+        // // Policies
+        $this->filesystem->ensureDirectoryExists(app_path('Policies'));
+        $this->filesystem->copyDirectory($this->stubPath.'/default/app/Policies', app_path('Policies'));
 
         // // Providers
         $this->filesystem->ensureDirectoryExists(app_path('Providers'));
@@ -100,6 +111,7 @@ trait FileOperations
         // Config
         $this->filesystem->ensureDirectoryExists(base_path('config'));
         copy($this->stubPath.'/default/config/cms.php', base_path('config/cms.php'));
+        copy($this->stubPath.'/default/config/permission.php', base_path('config/permission.php'));
 
         // Database
         $this->filesystem->ensureDirectoryExists(base_path('database'));

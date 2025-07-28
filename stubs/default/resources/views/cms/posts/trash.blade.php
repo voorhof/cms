@@ -1,3 +1,4 @@
+@php use App\Models\Post; @endphp
 <x-cms-layout>
     <x-slot name="header">
         <h1 class="fs-2 text-center mb-0">
@@ -11,7 +12,7 @@
             <i class="bi bi-arrow-left"></i> {{ __('All posts') }}
         </a>
 
-        @can('manage posts')
+        @can('emptyTrash', Post::class)
             {{-- Trash all posts --}}
             <form method="POST" action="{{ route(config('cms.route_name_prefix').'.posts.emptyTrash') }}" class="ms-auto">
                 @csrf
@@ -37,22 +38,26 @@
 
                         <li class="d-flex align-items-center gap-2 mb-2">
                             {{-- Delete form --}}
-                            <form method="POST" action="{{ route(config('cms.route_name_prefix').'.posts.delete', $post) }}">
-                                @csrf
-                                @method('DELETE')
-                                <x-cms.button class="btn-danger btn-sm lh-sm">
-                                    <i class="bi bi-trash"></i> {{ __('Delete') }}
-                                </x-cms.button>
-                            </form>
+                            @can('forceDelete', $post)
+                                <form method="POST" action="{{ route(config('cms.route_name_prefix').'.posts.delete', $post) }}">
+                                    @csrf
+                                    @method('DELETE')
+                                    <x-cms.button class="btn-danger btn-sm lh-sm">
+                                        <i class="bi bi-trash"></i> {{ __('Delete') }}
+                                    </x-cms.button>
+                                </form>
+                            @endcan
 
                             {{-- Restore form --}}
-                            <form method="POST" action="{{ route(config('cms.route_name_prefix').'.posts.restore', $post) }}">
-                                @csrf
-                                @method('PATCH')
-                                <x-cms.button class="btn-warning btn-sm lh-sm">
-                                    <i class="bi bi-arrow-counterclockwise"></i> {{ __('Restore') }}
-                                </x-cms.button>
-                            </form>
+                            @can('restore', $post)
+                                <form method="POST" action="{{ route(config('cms.route_name_prefix').'.posts.restore', $post) }}">
+                                    @csrf
+                                    @method('PATCH')
+                                    <x-cms.button class="btn-warning btn-sm lh-sm">
+                                        <i class="bi bi-arrow-counterclockwise"></i> {{ __('Restore') }}
+                                    </x-cms.button>
+                                </form>
+                            @endcan
 
                             {{-- Post title --}}
                             <strong class="fs-5">

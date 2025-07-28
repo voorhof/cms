@@ -11,17 +11,17 @@
             <i class="bi bi-arrow-left"></i> {{ __('All posts') }}
         </a>
 
-        @canany(['manage posts', 'edit post'])
+        @can('update', $post)
             <a class="btn btn-outline-primary btn-sm lh-sm ms-sm-auto" href="{{ route(config('cms.route_name_prefix').'.posts.edit', $post) }}">
                 <i class="bi bi-pencil-square"></i> {{ __('Edit post') }}
             </a>
+        @endcan
 
-            @can('manage posts')
-                {{-- Trigger delete post modal --}}
-                <x-cms.button type="button" class="btn-outline-danger btn-sm lh-sm" data-bs-toggle="modal" data-bs-target="#deletePostModal">
-                    <i class="bi bi-trash"></i> {{ __('Delete post') }}
-                </x-cms.button>
-            @endcan
+        @can('delete', $post)
+            {{-- Trigger delete post modal --}}
+            <x-cms.button type="button" class="btn-outline-danger btn-sm lh-sm" data-bs-toggle="modal" data-bs-target="#deletePostModal">
+                <i class="bi bi-trash"></i> {{ __('Delete post') }}
+            </x-cms.button>
         @endcan
     </x-slot>
 
@@ -80,7 +80,7 @@
                                     {{ $post->published_at }}
                                 @endif
 
-                                @canany(['manage posts', 'publish post'])
+                                @can('publish', $post)
                                     {{-- Trigger publish post modal --}}
                                     @if($post->published_at)
                                         <x-cms.button type="button" class="btn-outline-dark btn-sm lh-sm d-block mt-1" data-bs-toggle="modal" data-bs-target="#publishPostModal">
@@ -120,7 +120,7 @@
 
     @push('modals')
         {{-- Publish post modal--}}
-        @canany(['manage posts', 'publish post'])
+        @can('publish', $post)
             <div class="modal fade" id="publishPostModal" tabindex="-1" aria-labelledby="publishPostModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <form class="modal-content" method="POST" action="{{ route(config('cms.route_name_prefix').'.posts.publish', $post) }}">
@@ -165,10 +165,10 @@
                     </form>
                 </div>
             </div>
-        @endcanany
+        @endcan
 
         {{-- Delete post modal--}}
-        @can('manage posts')
+        @can('delete', $post)
             <div class="modal fade" id="deletePostModal" tabindex="-1" aria-labelledby="deletePostModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">

@@ -4,30 +4,25 @@ namespace App\Http\Controllers\Cms;
 
 use App\Http\Requests\Cms\StoreUserRequest;
 use App\Http\Requests\Cms\UpdateUserRequest;
+use App\Models\Role;
 use App\Models\User;
 use App\Services\Cms\Contracts\UserServiceInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\View\View;
-use Spatie\Permission\Models\Role;
 
 class CmsUserController extends BaseCmsController implements HasMiddleware
 {
     /**
-     * The user service implementation.
-     */
-    protected UserServiceInterface $userService;
-
-    /**
-     * Create a new controller instance.
+     * Create a new controller instance,
+     * with the user service implementation.
      *
      * @return void
      */
-    public function __construct(UserServiceInterface $userService)
-    {
-        $this->userService = $userService;
-    }
+    public function __construct(
+        protected UserServiceInterface $userService
+    ) {}
 
     /**
      * Get the middleware that should be assigned to the controller.
@@ -35,7 +30,15 @@ class CmsUserController extends BaseCmsController implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('permission:manage users', except: ['index', 'show']),
+            new Middleware('can:viewAny,App\Models\User', only: ['index']),
+            new Middleware('can:view,user', only: ['show']),
+            new Middleware('can:create,App\Models\User', only: ['create', 'store']),
+            new Middleware('can:update,user', only: ['edit', 'update']),
+            new Middleware('can:delete,user', only: ['destroy']),
+            new Middleware('can:restore,user', only: ['restore']),
+            new Middleware('can:forceDelete,user', only: ['delete']),
+            new Middleware('can:viewTrash,App\Models\User', only: ['viewTrash']),
+            new Middleware('can:emptyTrash,App\Models\User', only: ['emptyTrash']),
         ];
     }
 
@@ -131,7 +134,7 @@ class CmsUserController extends BaseCmsController implements HasMiddleware
     /**
      * Display a listing of soft deleted resource.
      */
-    public function trash(): View
+    public function viewTrash(): View
     {
         $users = User::onlyTrashed()
             ->orderBy('name')
@@ -151,17 +154,17 @@ class CmsUserController extends BaseCmsController implements HasMiddleware
     }
 
     /**
-     * Delete the specified resource from storage.
+     * Permanently delete the specified resource from storage.
      */
     public function delete(User $user): RedirectResponse
     {
         $this->userService->forceDeleteUser($user);
 
-        return redirect()->route(config('cms.route_name_prefix').'.users.trash');
+        return redirect()->route(config('cms.route_name_prefix').'.users.viewTrash');
     }
 
     /**
-     * Delete all soft deleted resource from storage.
+     * Permanently delete all soft deleted resource from storage.
      */
     public function emptyTrash(): RedirectResponse
     {

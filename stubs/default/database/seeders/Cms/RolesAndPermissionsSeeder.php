@@ -2,9 +2,9 @@
 
 namespace Database\Seeders\Cms;
 
+use App\Models\Role;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
 
 class RolesAndPermissionsSeeder extends Seeder
@@ -30,7 +30,7 @@ class RolesAndPermissionsSeeder extends Seeder
         // The super-admin permissions are handled by a global Gate within the boot method of the AppServiceProvider
         Role::create(['name' => 'subscriber']);
         Role::create(['name' => 'contributor'])->givePermissionTo('access cms', 'create post', 'edit post');
-        Role::create(['name' => 'editor'])->givePermissionTo('access cms', 'manage users', 'create post', 'edit post', 'publish post');
+        Role::create(['name' => 'editor'])->givePermissionTo('access cms', 'create post', 'edit post', 'publish post');
         Role::create(['name' => 'manager'])->givePermissionTo('access cms', 'manage users', 'manage roles', 'manage posts');
         Role::create(['name' => 'admin'])->givePermissionTo(Permission::all());
         Role::create(['name' => 'super-admin']);

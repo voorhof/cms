@@ -3,10 +3,10 @@
 namespace Tests\Feature;
 
 use App\Models\Post;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class CmsPostControllerTest extends TestCase
@@ -350,7 +350,7 @@ class CmsPostControllerTest extends TestCase
 
         $response = $this
             ->actingAs($this->userWithFullPermission)
-            ->get(route(config('cms.route_name_prefix').'.posts.trash'));
+            ->get(route(config('cms.route_name_prefix').'.posts.viewTrash'));
 
         $response->assertOk();
         $response->assertViewIs('cms.posts.trash');
@@ -361,7 +361,7 @@ class CmsPostControllerTest extends TestCase
     {
         $response = $this
             ->actingAs($this->userWithLimitedPermission)
-            ->get(route(config('cms.route_name_prefix').'.posts.trash'));
+            ->get(route(config('cms.route_name_prefix').'.posts.viewTrash'));
 
         $response->assertForbidden();
     }
@@ -407,7 +407,7 @@ class CmsPostControllerTest extends TestCase
             ->actingAs($this->userWithFullPermission)
             ->delete(route(config('cms.route_name_prefix').'.posts.delete', $this->testPost));
 
-        $response->assertRedirect(route(config('cms.route_name_prefix').'.posts.trash'));
+        $response->assertRedirect(route(config('cms.route_name_prefix').'.posts.viewTrash'));
         $this->assertDatabaseMissing('posts', [
             'id' => $this->testPost->id,
         ]);

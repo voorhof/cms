@@ -11,55 +11,55 @@
             <i class="bi bi-arrow-left"></i> {{ __('All roles') }}
         </a>
 
-        @can('manage roles')
-            @if(! in_array($role->name, config('cms.secured_roles')))
-                <a class="btn btn-outline-primary btn-sm lh-sm ms-sm-auto" href="{{ route(config('cms.route_name_prefix').'.roles.edit', $role) }}">
-                    <i class="bi bi-pencil-square"></i> {{ __('Edit role') }}
-                </a>
+        @can('update', $role)
+            <a class="btn btn-outline-primary btn-sm lh-sm ms-sm-auto" href="{{ route(config('cms.route_name_prefix').'.roles.edit', $role) }}">
+                <i class="bi bi-pencil-square"></i> {{ __('Edit role') }}
+            </a>
+        @endcan
 
-                {{-- Trigger delete role modal --}}
-                <x-cms.button type="button" class="btn-outline-danger btn-sm lh-sm" data-bs-toggle="modal" data-bs-target="#deleteRoleModal">
-                    <i class="bi bi-trash"></i> {{ __('Delete role') }}
-                </x-cms.button>
+        @can('delete', $role)
+            {{-- Trigger delete role modal --}}
+            <x-cms.button type="button" class="btn-outline-danger btn-sm lh-sm" data-bs-toggle="modal" data-bs-target="#deleteRoleModal">
+                <i class="bi bi-trash"></i> {{ __('Delete role') }}
+            </x-cms.button>
 
-                {{-- Delete role modal--}}
-                @push('modals')
-                    <div class="modal fade" id="deleteRoleModal" tabindex="-1" aria-labelledby="deleteRoleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h2 class="modal-title fs-5" id="deleteRoleModalLabel">
-                                        {{ __('Delete role') .': ' . $role->name }}
-                                    </h2>
+            {{-- Delete role modal--}}
+            @push('modals')
+                <div class="modal fade" id="deleteRoleModal" tabindex="-1" aria-labelledby="deleteRoleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h2 class="modal-title fs-5" id="deleteRoleModalLabel">
+                                    {{ __('Delete role') .': ' . $role->name }}
+                                </h2>
 
-                                    <x-cms.button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" />
-                                </div>
+                                <x-cms.button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" />
+                            </div>
 
-                                <div class="modal-body">
-                                    {{ __('Are you sure?') }} <br>
-                                    <strong class="text-danger">{{ __('This action cannot be undone!') }}</strong>
-                                </div>
+                            <div class="modal-body">
+                                {{ __('Are you sure?') }} <br>
+                                <strong class="text-danger">{{ __('This action cannot be undone!') }}</strong>
+                            </div>
 
-                                <div class="modal-footer justify-content-between">
-                                    <x-cms.button type="button" class="btn-secondary" data-bs-dismiss="modal">
-                                        {{ __('Cancel') }}
+                            <div class="modal-footer justify-content-between">
+                                <x-cms.button type="button" class="btn-secondary" data-bs-dismiss="modal">
+                                    {{ __('Cancel') }}
+                                </x-cms.button>
+
+
+                                {{-- Delete role form --}}
+                                <form method="POST" action="{{ route(config('cms.route_name_prefix').'.roles.destroy', $role) }}">
+                                    @csrf
+                                    @method('DELETE')
+                                    <x-cms.button class="btn-danger">
+                                        <i class="bi bi-trash"></i> {{ __('Delete') }}
                                     </x-cms.button>
-
-
-                                    {{-- Delete role form --}}
-                                    <form method="POST" action="{{ route(config('cms.route_name_prefix').'.roles.destroy', $role) }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <x-cms.button class="btn-danger">
-                                            <i class="bi bi-trash"></i> {{ __('Delete') }}
-                                        </x-cms.button>
-                                    </form>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
-                @endpush
-            @endif
+                </div>
+            @endpush
         @endcan
     </x-slot>
 
@@ -101,31 +101,29 @@
                     </table>
                 </div>
 
-                @can('manage roles')
-                    <div class="col-auto">
-                        <h4 class="fs-5">
-                            {{ __('Permissions') }}
-                        </h4>
+                <div class="col-auto">
+                    <h4 class="fs-5">
+                        {{ __('Permissions') }}
+                    </h4>
 
-                        @forelse($role->permissions->sortby('name') as $permission)
-                            @if($loop->first)
-                                <ul>
-                                    @endif
+                    @forelse($role->permissions->sortby('name') as $permission)
+                        @if($loop->first)
+                            <ul>
+                                @endif
 
-                                    <li class="text-capitalize">
-                                        {{ $permission->name }}
-                                    </li>
+                                <li class="text-capitalize">
+                                    {{ $permission->name }}
+                                </li>
 
-                                    @if($loop->last)
-                                </ul>
-                            @endif
-                        @empty
-                            <p class="fst-italic">
-                                <i class="bi bi-exclamation-circle"></i> {{ __('No permissions found') }}
-                            </p>
-                        @endforelse
-                    </div>
-                @endcan
+                                @if($loop->last)
+                            </ul>
+                        @endif
+                    @empty
+                        <p class="fst-italic">
+                            <i class="bi bi-exclamation-circle"></i> {{ __('No permissions found') }}
+                        </p>
+                    @endforelse
+                </div>
             </div>
         </div>
 

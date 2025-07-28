@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class CmsRoleControllerTest extends TestCase
@@ -232,7 +232,7 @@ class CmsRoleControllerTest extends TestCase
             ->actingAs($this->userWithPermission)
             ->put(route(config('cms.route_name_prefix').'.roles.update', $superAdminRole), $updatedData);
 
-        $response->assertRedirect(route(config('cms.route_name_prefix').'.roles.show', $superAdminRole));
+        $response->assertForbidden();
         $this->assertDatabaseMissing('roles', [
             'id' => $superAdminRole->id,
             'name' => 'trying-to-update-super-admin',
@@ -251,7 +251,7 @@ class CmsRoleControllerTest extends TestCase
             ->actingAs($this->userWithPermission)
             ->put(route(config('cms.route_name_prefix').'.roles.update', $adminRole), $updatedData);
 
-        $response->assertRedirect(route(config('cms.route_name_prefix').'.roles.show', $adminRole));
+        $response->assertForbidden();
         $this->assertDatabaseMissing('roles', [
             'id' => $adminRole->id,
             'name' => 'trying-to-update-admin',
@@ -291,7 +291,7 @@ class CmsRoleControllerTest extends TestCase
             ->actingAs($this->userWithPermission)
             ->delete(route(config('cms.route_name_prefix').'.roles.destroy', $superAdminRole));
 
-        $response->assertRedirect(route(config('cms.route_name_prefix').'.roles.show', $superAdminRole));
+        $response->assertForbidden();
         $this->assertDatabaseHas('roles', [
             'id' => $superAdminRole->id,
         ]);
@@ -305,7 +305,7 @@ class CmsRoleControllerTest extends TestCase
             ->actingAs($this->userWithPermission)
             ->delete(route(config('cms.route_name_prefix').'.roles.destroy', $adminRole));
 
-        $response->assertRedirect(route(config('cms.route_name_prefix').'.roles.show', $adminRole));
+        $response->assertForbidden();
         $this->assertDatabaseHas('roles', [
             'id' => $adminRole->id,
         ]);

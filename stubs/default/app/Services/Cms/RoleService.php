@@ -3,7 +3,7 @@
 namespace App\Services\Cms;
 
 use App\Services\Cms\Contracts\RoleServiceInterface;
-use Spatie\Permission\Models\Role;
+use App\Models\Role;
 use Voorhof\Flash\Facades\Flash;
 
 class RoleService implements RoleServiceInterface
@@ -42,19 +42,14 @@ class RoleService implements RoleServiceInterface
      */
     public function updateRole(Role $role, string $name, array $permissions = []): Role
     {
-        // Only update the role when it is not a secured role
-        if (! in_array($role->name, config('cms.secured_roles'))) {
-            // Update role name
-            $role->name = $name;
-            $role->save();
+        // Update role name
+        $role->name = $name;
+        $role->save();
 
-            // Sync permissions
-            $role->syncPermissions($permissions);
+        // Sync permissions
+        $role->syncPermissions($permissions);
 
-            Flash::success(__('Successful update!'));
-        } else {
-            Flash::danger(__('Unable to update!'));
-        }
+        Flash::success(__('Successful update!'));
 
         // Return role
         return $role;
@@ -63,22 +58,12 @@ class RoleService implements RoleServiceInterface
     /**
      * Delete a role
      *
-     * @param  Role  $role  The role to delete
-     * @return bool Whether the deletion was successful
+     * @param  Role  $role  The role to permanently delete
      */
-    public function deleteRole(Role $role): bool
+    public function deleteRole(Role $role): void
     {
-        // Only delete the role when it is not a secured role
-        if (! in_array($role->name, config('cms.secured_roles'))) {
-            $role->delete();
+        $role->delete();
 
-            Flash::warning(__('Successful delete!'));
-
-            return true;
-        } else {
-            Flash::danger(__('Unable to delete!'));
-
-            return false;
-        }
+        Flash::warning(__('Successful delete!'));
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Cms;
 
 use App\Http\Requests\Cms\StoreRoleRequest;
 use App\Http\Requests\Cms\UpdateRoleRequest;
+use App\Models\Role;
 use App\Models\User;
 use App\Services\Cms\Contracts\RoleServiceInterface;
 use Illuminate\Http\RedirectResponse;
@@ -11,24 +12,18 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\View\View;
 use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 
 class CmsRoleController extends BaseCmsController implements HasMiddleware
 {
     /**
-     * The role service implementation.
-     */
-    protected RoleServiceInterface $roleService;
-
-    /**
-     * Create a new controller instance.
+     * Create a new controller instance,
+     * with the role service implementation.
      *
      * @return void
      */
-    public function __construct(RoleServiceInterface $roleService)
-    {
-        $this->roleService = $roleService;
-    }
+    public function __construct(
+        protected RoleServiceInterface $roleService
+    ) {}
 
     /**
      * Get the middleware that should be assigned to the controller.
@@ -36,7 +31,11 @@ class CmsRoleController extends BaseCmsController implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware('permission:manage roles'),
+            new Middleware('can:viewAny,App\Models\Role', only: ['index']),
+            new Middleware('can:view,role', only: ['show']),
+            new Middleware('can:create,App\Models\Role', only: ['create', 'store']),
+            new Middleware('can:update,role', only: ['edit', 'update']),
+            new Middleware('can:delete,role', only: ['destroy']),
         ];
     }
 
@@ -115,15 +114,11 @@ class CmsRoleController extends BaseCmsController implements HasMiddleware
     }
 
     /**
-     * Delete the specified resource from storage.
+     * Permanently delete the specified resource from storage.
      */
     public function destroy(Role $role): RedirectResponse
     {
-        $success = $this->roleService->deleteRole($role);
-
-        if (! $success) {
-            return redirect()->route(config('cms.route_name_prefix').'.roles.show', $role);
-        }
+        $this->roleService->deleteRole($role);
 
         return redirect()->route(config('cms.route_name_prefix').'.roles.index');
     }

@@ -4,7 +4,6 @@ namespace App\Http\Requests\Cms;
 
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class UpdateUserRequest extends FormRequest
@@ -14,11 +13,7 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if (Auth::user()->can('manage users')) {
-            return true;
-        }
-
-        return false;
+        return $this->user()->can('update', $this->route('user'));
     }
 
     /**

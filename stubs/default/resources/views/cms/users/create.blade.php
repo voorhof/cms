@@ -32,8 +32,8 @@
                         <div class="mb-3">
                             <x-cms.input-label for="name" :value="__('Name')" />
                             <x-cms.input-text type="text" id="name" name="name"
-                                          :value="old('name')" :isInvalid="$errors->has('name')"
-                                          required />
+                                              :value="old('name')" :isInvalid="$errors->has('name')"
+                                              required />
                             <x-cms.input-error :messages="$errors->get('name')" :defaultMessage="__('This field is required.')" />
                         </div>
 
@@ -41,28 +41,26 @@
                         <div class="mb-3">
                             <x-cms.input-label for="email" :value="__('Email')" />
                             <x-cms.input-text type="email" id="email" name="email"
-                                          :value="old('email')" :isInvalid="$errors->has('email')"
-                                          required />
+                                              :value="old('email')" :isInvalid="$errors->has('email')"
+                                              required />
                             <x-cms.input-error :messages="$errors->get('email')" :defaultMessage="__('This field must be a valid email address.')" />
                         </div>
 
                         {{-- Role select --}}
-                        @can('manage roles')
-                            <h3 class="fs-5">
-                                {{ __('Role') }}
-                            </h3>
+                        <h3 class="fs-5">
+                            {{ __('Role') }}
+                        </h3>
 
-                            <div class="mb-3">
-                                <x-cms.input-label for="role" :value="__('Role')" />
-                                <select name="role" id="role" class="form-select text-capitalize {{ $errors->has('role') ? 'is-invalid' : '' }}" required>
-                                    <option value="" selected disabled>{{ __('Choose') }}...</option>
-                                    @foreach ($roles as $role)
-                                        <option value="{{ $role }}" {{ old('role') === $role ? 'selected': '' }}>{{ $role }}</option>
-                                    @endforeach
-                                </select>
-                                <x-cms.input-error :messages="$errors->get('role')" :defaultMessage="__('This field is required.')" />
-                            </div>
-                        @endcan
+                        <div class="mb-3">
+                            <x-cms.input-label for="role" :value="__('Role')" />
+                            <select name="role" id="role" class="form-select text-capitalize {{ $errors->has('role') ? 'is-invalid' : '' }}" required>
+                                <option value="" selected disabled>{{ __('Choose') }}...</option>
+                                @foreach ($roles as $role)
+                                    <option value="{{ $role }}" {{ old('role') === $role ? 'selected': '' }}>{{ $role }}</option>
+                                @endforeach
+                            </select>
+                            <x-cms.input-error :messages="$errors->get('role')" :defaultMessage="__('This field is required.')" />
+                        </div>
 
                         {{-- Submit --}}
                         <div class="d-flex flex-wrap gap-3 align-items-center justify-content-between py-1">

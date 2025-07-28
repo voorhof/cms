@@ -1,3 +1,4 @@
+@php use App\Models\Post; @endphp
 <x-cms-layout>
     <x-slot name="header">
         <h1 class="fs-2 text-center mb-0">
@@ -6,20 +7,26 @@
         </h1>
     </x-slot>
 
-    @canany(['manage posts', 'create post'])
+    @canany(['create', 'viewTrash'], Post::class)
         <x-slot name="actionButtons">
-            <a class="btn btn-outline-primary btn-sm lh-sm" href="{{ route(config('cms.route_name_prefix').'.posts.create') }}">
-                <i class="bi bi-plus-circle"></i> {{ __('New post') }}
-            </a>
+            @can('create', Post::class)
+                <a class="btn btn-outline-primary btn-sm lh-sm"
+                   href="{{ route(config('cms.route_name_prefix').'.posts.create') }}">
+                    <i class="bi bi-plus-circle"></i> {{ __('New post') }}
+                </a>
+            @endcan
 
-            @can('manage posts')
-                <a class="btn btn-outline-secondary btn-sm lh-sm ms-sm-auto" href="{{ route(config('cms.route_name_prefix').'.posts.trash') }}">
+            @can('viewTrash', Post::class)
+                <a class="btn btn-outline-secondary btn-sm lh-sm ms-sm-auto"
+                   href="{{ route(config('cms.route_name_prefix').'.posts.viewTrash') }}">
                     <i class="bi bi-trash"></i> {{ __('Trash') }}
-                    <span class="{{ $postsTrashCount > 0 ? 'fw-bold' : 'fw-light' }}">{{ '(' . $postsTrashCount . ')' }}</span>
+                    <span class="{{ $postsTrashCount > 0 ? 'fw-bold' : 'fw-light' }}">
+                        {{ '(' . $postsTrashCount . ')' }}
+                    </span>
                 </a>
             @endcan
         </x-slot>
-    @endcan
+    @endcanany
 
     {{-- $slot --}}
     <div class="row">
