@@ -35,6 +35,13 @@ class UserPolicy
      */
     public function update(User $user, User $model): bool
     {
+        if (
+            $model->hasAnyRole(config('cms.secured_roles'))
+            && ! $user->hasAnyRole(config('cms.secured_roles'))
+        ) {
+            return false;
+        }
+
         return $user->can('manage users');
     }
 
@@ -43,6 +50,13 @@ class UserPolicy
      */
     public function delete(User $user, User $model): bool
     {
+        if (
+            $model->hasAnyRole(config('cms.secured_roles'))
+            && ! $user->hasAnyRole(config('cms.secured_roles'))
+        ) {
+            return false;
+        }
+
         return $user->can('manage users');
     }
 
@@ -59,6 +73,13 @@ class UserPolicy
      */
     public function forceDelete(User $user, User $model): bool
     {
+        if (
+            $model->hasAnyRole(config('cms.secured_roles'))
+            && ! $user->hasAnyRole(config('cms.secured_roles'))
+        ) {
+            return false;
+        }
+
         return $user->can('manage users');
     }
 

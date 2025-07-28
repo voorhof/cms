@@ -48,7 +48,7 @@
                         <tr>
                             <th>{{__('Author') }}</th>
                             <td>
-                                @if($post->user->id)
+                                @if($post->user->id && Auth::user()->can('view', $post->user))
                                     <a href="{{ route(config('cms.route_name_prefix').'.users.show', $post->user) }}">
                                         {{ $post->user->name }}
                                     </a>
@@ -62,7 +62,7 @@
                             <tr>
                                 <th>{{ __('Published by') }}</th>
                                 <td>
-                                    @if($post->publisher->id)
+                                    @if($post->publisher->id && Auth::user()->can('view', $post->publisher))
                                         <a href="{{ route(config('cms.route_name_prefix').'.users.show', $post->publisher) }}">
                                             {{ $post->publisher->name }}
                                         </a>

@@ -29,11 +29,16 @@
                         @endif
 
                         <li class="mb-1">
-                            <a class="icon-link link-dark link-underline-opacity-25 link-underline-opacity-100-hover text-capitalize"
-                               href="{{ route(config('cms.route_name_prefix').'.roles.show', $role) }}">
+                            @can('view', $role)
+                                <a class="icon-link link-dark link-underline-opacity-25 link-underline-opacity-100-hover text-capitalize"
+                                   href="{{ route(config('cms.route_name_prefix').'.roles.show', $role) }}">
+                                    <i class="bi bi-shield-lock"></i>
+                                    {{ $role->name }}
+                                </a>
+                            @else
                                 <i class="bi bi-shield-lock"></i>
                                 {{ $role->name }}
-                            </a>
+                            @endcan
                         </li>
 
                         @if($loop->last)

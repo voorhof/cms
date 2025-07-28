@@ -144,9 +144,13 @@
                                 <i class="bi bi-person-check text-success"></i>
                             @endif
 
-                            <a href="{{ route(config('cms.route_name_prefix').'.users.show', $user) }}" class="link-dark ms-1">
+                            @can('view', $user)
+                                <a href="{{ route(config('cms.route_name_prefix').'.users.show', $user) }}" class="link-dark ms-1">
+                                    {{ $user->name }}
+                                </a>
+                            @else
                                 {{ $user->name }}
-                            </a>
+                            @endcan
                         </li>
                         @if($loop->last)
                     </ul>

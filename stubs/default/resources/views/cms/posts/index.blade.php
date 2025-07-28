@@ -41,13 +41,20 @@
                         @endif
 
                         <li class="mb-1">
-                            <a class="icon-link link-dark link-underline-opacity-25 link-underline-opacity-100-hover"
-                               href="{{ route(config('cms.route_name_prefix').'.posts.show', $post) }}">
+                            @can('view', $post)
+                                <a class="icon-link link-dark link-underline-opacity-25 link-underline-opacity-100-hover"
+                                   href="{{ route(config('cms.route_name_prefix').'.posts.show', $post) }}">
+                                    <i class="bi bi-sticky {{ $post->published_at ? 'text-success' : 'text-danger' }}"></i>
+                                    {{ $post->title }}
+                                    <div class="vr"></div>
+                                    <em class="small">{{ $post->user->name }}</em>
+                                </a>
+                            @else
                                 <i class="bi bi-sticky {{ $post->published_at ? 'text-success' : 'text-danger' }}"></i>
                                 {{ $post->title }}
                                 <div class="vr"></div>
                                 <em class="small">{{ $post->user->name }}</em>
-                            </a>
+                            @endcan
                         </li>
 
                         @if($loop->last)

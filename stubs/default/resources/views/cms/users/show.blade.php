@@ -8,12 +8,12 @@
     </x-slot>
 
     <x-slot name="actionButtons">
-        <a class="btn btn-sm lh-sm" href="{{ route(config('cms.route_name_prefix').'.users.index') }}">
+        <a class="btn btn-sm lh-sm me-sm-auto" href="{{ route(config('cms.route_name_prefix').'.users.index') }}">
             <i class="bi bi-arrow-left"></i> {{ __('All users') }}
         </a>
 
         @can('update', $user)
-            <a class="btn btn-outline-primary btn-sm lh-sm ms-sm-auto"
+            <a class="btn btn-outline-primary btn-sm lh-sm"
                href="{{ route(config('cms.route_name_prefix').'.users.edit', $user) }}">
                 <i class="bi bi-pencil-square"></i> {{ __('Edit user') }}
             </a>

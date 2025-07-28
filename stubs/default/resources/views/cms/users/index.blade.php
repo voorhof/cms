@@ -41,16 +41,21 @@
                         @endif
 
                         <li class="mb-1">
-                            <a class="icon-link link-dark link-underline-opacity-25 link-underline-opacity-100-hover"
-                               href="{{ route(config('cms.route_name_prefix').'.users.show', $user) }}">
-                                @if(! $user->email_verified_at)
-                                    <i class="bi bi-person-dash text-danger"></i>
-                                @else
-                                    <i class="bi bi-person-check text-success"></i>
-                                @endif
+                            @can('view', $user)
+                                <a class="icon-link link-dark link-underline-opacity-25 link-underline-opacity-100-hover"
+                                   href="{{ route(config('cms.route_name_prefix').'.users.show', $user) }}">
+                                    @if(! $user->email_verified_at)
+                                        <i class="bi bi-person-dash text-danger"></i>
+                                    @else
+                                        <i class="bi bi-person-check text-success"></i>
+                                    @endif
 
+                                    {{ $user->name }}
+                                </a>
+                            @else
+                                <i class="bi bi-person text-dark"></i>
                                 {{ $user->name }}
-                            </a>
+                            @endcan
                         </li>
 
                         @if($loop->last)
