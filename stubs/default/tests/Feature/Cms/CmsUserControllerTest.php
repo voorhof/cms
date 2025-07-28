@@ -222,7 +222,7 @@ class CmsUserControllerTest extends TestCase
             ->actingAs($this->userWithPermission)
             ->put(route(config('cms.route_name_prefix').'.users.update', $superAdminUser), $updatedData);
 
-        $response->assertRedirect(route(config('cms.route_name_prefix').'.users.show', $superAdminUser));
+        $response->assertForbidden();
         $this->assertDatabaseMissing('users', [
             'id' => $superAdminUser->id,
             'name' => 'Trying to Update Super Admin',
@@ -271,7 +271,7 @@ class CmsUserControllerTest extends TestCase
             ->actingAs($this->userWithPermission)
             ->delete(route(config('cms.route_name_prefix').'.users.destroy', $superAdminUser));
 
-        $response->assertRedirect(route(config('cms.route_name_prefix').'.users.show', $superAdminUser));
+        $response->assertForbidden();
         $this->assertNotSoftDeleted('users', [
             'id' => $superAdminUser->id,
         ]);
