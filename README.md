@@ -24,8 +24,13 @@ After installation, the database will automatically be refreshed and seeded with
 php artisan cms:install
 ```
 
+After installation some basic data will have been seeded to the database,  
+please customize the CmsSeeder file to your development needs.
+
 Under the hood [Laravel Permission](https://spatie.be/docs/laravel-permission/v6) from Spatie is used for assigning roles.  
-You may want to publish the config file for editing.
+Everything needed for this project is already in place after installation,  
+but if you feel the need to re-publish the config file and database migration in the future, you can with the command below.  
+Keep in mind that the default Spatie Role model has been extended, so you will probably have to update that again in the permissions.php config file.
 
 ```bash
 php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
@@ -42,7 +47,7 @@ php artisan bries:install
 ## Testing
 
 After installation there will be new test files present in the app,  
-be sure to run composer test to make sure everything is working a expected.
+be sure to run composer test to make sure everything is working as expected.
 
 ```bash
 php artisan test
