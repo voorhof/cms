@@ -48,7 +48,7 @@ class CmsPostController extends BaseCmsController implements HasMiddleware
      */
     public function index(): View
     {
-        $posts = Post::with('user')
+        $posts = Post::with('author')
             ->orderByDesc('created_at')
             ->get();
 
@@ -139,7 +139,7 @@ class CmsPostController extends BaseCmsController implements HasMiddleware
     public function viewTrash(): View
     {
         $posts = Post::onlyTrashed()
-            ->with('user')
+            ->with('author')
             ->orderByDesc('created_at')
             ->get();
 

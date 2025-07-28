@@ -47,13 +47,13 @@
                                     <i class="bi bi-sticky {{ $post->published_at ? 'text-success' : 'text-danger' }}"></i>
                                     {{ $post->title }}
                                     <div class="vr"></div>
-                                    <em class="small">{{ $post->user->name }}</em>
+                                    <em class="small">{{ $post->author->name }}</em>
                                 </a>
                             @else
                                 <i class="bi bi-sticky {{ $post->published_at ? 'text-success' : 'text-danger' }}"></i>
                                 {{ $post->title }}
                                 <div class="vr"></div>
-                                <em class="small">{{ $post->user->name }}</em>
+                                <em class="small">{{ $post->author->name }}</em>
                             @endcan
                         </li>
 

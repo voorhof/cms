@@ -48,12 +48,12 @@
                         <tr>
                             <th>{{__('Author') }}</th>
                             <td>
-                                @if($post->user->id && Auth::user()->can('view', $post->user))
-                                    <a href="{{ route(config('cms.route_name_prefix').'.users.show', $post->user) }}">
-                                        {{ $post->user->name }}
+                                @if($post->author->id && Auth::user()->can('view', $post->author))
+                                    <a href="{{ route(config('cms.route_name_prefix').'.users.show', $post->author) }}">
+                                        {{ $post->author->name }}
                                     </a>
                                 @else
-                                    {{ $post->user->name }}
+                                    {{ $post->author->name }}
                                 @endif
                             </td>
                         </tr>

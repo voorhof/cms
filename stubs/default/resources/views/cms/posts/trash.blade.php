@@ -63,7 +63,7 @@
                             <strong class="fs-5">
                                 {{ $post->title }}
                                 <div class="vr"></div>
-                                <em class="small">{{ $post->user->name }}</em>
+                                <em class="small">{{ $post->author->name }}</em>
                             </strong>
                         </li>
 
