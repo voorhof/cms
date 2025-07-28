@@ -2,8 +2,8 @@
 
 namespace App\Services\Cms;
 
-use App\Services\Cms\Contracts\RoleServiceInterface;
 use App\Models\Role;
+use App\Services\Cms\Contracts\RoleServiceInterface;
 use Voorhof\Flash\Facades\Flash;
 
 class RoleService implements RoleServiceInterface
