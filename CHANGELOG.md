@@ -2,6 +2,12 @@
 
 All notable release changes to `Voorhof CMS` will be documented in this file.
 
+## v1.1.1 - 2025-07-31
+
+Fixed command arguments
+
+**Full Changelog**: https://github.com/voorhof/cms/compare/v1.1.0...v1.1.1
+
 ## v1.1.0 - 2025-07-31
 
 ### What's Changed
