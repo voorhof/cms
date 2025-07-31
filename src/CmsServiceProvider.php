@@ -4,6 +4,7 @@ namespace Voorhof\Cms;
 
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
+use Voorhof\Cms\Console\Commands\InstallBriesCmsCommand;
 use Voorhof\Cms\Console\Commands\InstallCmsCommand;
 
 class CmsServiceProvider extends ServiceProvider implements DeferrableProvider
@@ -26,6 +27,7 @@ class CmsServiceProvider extends ServiceProvider implements DeferrableProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 InstallCmsCommand::class,
+                InstallBriesCmsCommand::class,
             ]);
         }
     }
@@ -37,6 +39,7 @@ class CmsServiceProvider extends ServiceProvider implements DeferrableProvider
     {
         return [
             InstallCmsCommand::class,
+            InstallBriesCmsCommand::class,
         ];
     }
 }

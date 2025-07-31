@@ -7,6 +7,9 @@ This directory contains traits used by the console commands.
 ### ComposerOperations
 Handles Composer package management operations.
 
+### DatabaseOperations
+Executes database migrations and seeders.
+
 ### FileOperations
 Manages file system operations and file manipulations.
 
