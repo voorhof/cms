@@ -59,11 +59,20 @@ class InstallBriesCmsCommand extends Command
 
             $this->components->info('Installing Bries...');
 
-            $this->call('bries:copy dark=1 grid=0 cheatsheet=1 pest=1 backup=0');
+            $this->call('bries:copy', [
+                'dark' => 1,
+                'grid' => 0,
+                'cheatsheet' => 1,
+                'pest' => 1,
+                'backup' => 0,
+            ]);
 
             $this->components->info('Installing CMS...');
 
-            $this->call('cms:install pest=1 backup=0');
+            $this->call('cms:install', [
+                'pest' => 1,
+                'backup' => 0,
+            ]);
 
             $this->components->success('Installation successful!');
 
