@@ -20,7 +20,7 @@ jobs:
       fail-fast: true
       matrix:
         os: [ubuntu-latest, windows-latest]
-        php: [8.4, 8.3, 8.2]
+        php: [8.5, 8.4, 8.3]
         laravel: [12]
         args: [""]
         include:
@@ -44,14 +44,14 @@ jobs:
 
       - name: Setup Laravel
         working-directory: laravel-app
-        if: ${{ matrix.laravel != '12' }}
+        if: ${{ matrix.laravel == '12' }}
         run: |
           composer create-project laravel/laravel:^${{ matrix.laravel }}.0 .
           composer config repositories.cms '{"type": "path", "url": "../cms"}' --file composer.json
 
       - name: Setup Laravel (dev-master)
         working-directory: laravel-app
-        if: ${{ matrix.laravel == '12' }}
+        if: ${{ matrix.laravel != '12' }}
         run: |
           composer create-project laravel/laravel:dev-master .
           composer config repositories.cms '{"type": "path", "url": "../cms"}' --file composer.json
