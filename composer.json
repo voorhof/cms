@@ -18,7 +18,7 @@
         "illuminate/console": "^12.0",
         "illuminate/filesystem": "^12.0",
         "illuminate/support": "^12.0",
-        "spatie/laravel-permission": "^6.24",
+        "spatie/laravel-permission": "^7.1",
         "symfony/console": "^7.4",
         "voorhof/bries": "^1.1.1",
         "voorhof/flash": "^1.0.3"
